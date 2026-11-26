@@ -1,6 +1,9 @@
 # WakeBand strap patterns
 
-**3D-printed TPU test strap (no sewing):** see [`tpu-rev-a/`](tpu-rev-a/). It's a two-piece strap with a double stud and tuck clasp, in sizes S/M/L.
+**3D-printed TPU test straps (no sewing), sizes S/M/L:**
+
+- [`tpu-rev-b/`](tpu-rev-b/): slit lock. Flat split-arrow tongues weave through two slits at both ends, with nothing standing up off the bed, so there's no layer-line weak point. Recommended.
+- [`tpu-rev-a/`](tpu-rev-a/): double stud and tuck. The stud necks load across layer lines.
 
 ## Sewn straps
 
