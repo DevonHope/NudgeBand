@@ -31,7 +31,7 @@ slit**. Squeeze the two barbs together to get them through, and they spring open
 tail is doubled back, so moving the tongue one slit moves the fit by half a slit pitch. That gives
 **8 settings, 3.5 mm apart**. To undo, squeeze the barbs and pull the tongue back out.
 
-**Grip version:** press the folded tail down onto the lower run. The 0.5 mm teeth on both layers mesh.
+**Grip version:** press the folded tail down onto the lower run. The 0.8 mm teeth on both layers mesh.
 Pulling the tail tighter makes it slide, but it won't slip looser. Slide the 2 keepers over both layers
 to hold them flat. To loosen it, peel the fold-back up off the teeth. Adjustment is stepless in practice
 (1.6 mm tooth pitch), and the fold-back is 30 to 54 mm long depending on wrist size.
@@ -45,5 +45,5 @@ What to check when testing:
 ## Printing
 
 Flat, skin side down, 2.0 mm thick (the tail's clasp zone is thinned to 1.6 mm so the fold stays low).
-Everything that takes load lies in the bed plane. The only features standing up are the 0.5 mm grip
+Everything that takes load lies in the bed plane. The only features standing up are the 0.8 mm grip
 teeth. See [`print-plates/README.md`](print-plates/README.md) for X1C TPU settings.

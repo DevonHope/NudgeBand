@@ -8,11 +8,11 @@ the frame's end bar and is locked onto itself:
   * ``lock``: the tail tip is rev B's split-arrow tongue. It weaves down and up through two slits in
     the tail's own lower run. Because the tail is doubled back, each 7 mm slit pitch gives a 3.5 mm
     adjustment step.
-  * ``grip``: no slits. Low ratchet teeth on the tail's top face mesh with themselves once it is
+  * ``grip``: no slits. Low (0.8 mm) ratchet teeth on the tail's top face mesh with themselves once it is
     folded back (1.6 mm steps). They slip when you pull tighter and hold the other way. Two sliding
     keepers hold the layers together.
 
-Everything is flat (bed face = skin side), so nothing loads across layer lines except the 0.5 mm
+Everything is flat (bed face = skin side), so nothing loads across layer lines except the 0.8 mm
 teeth. The clasp zone of the tail is thinned to 1.6 mm so the fold stays low on the wrist. The
 frame sits on the side of the wrist, 25 mm from the case strap bar.
 
@@ -49,10 +49,11 @@ X_MIN = 10.0                   # nearest a slit/keeper may sit to the window cen
 L_TT = 1.6
 L_WEAVE = b.PITCH + 2 * (TAIL_T + L_TT) - b.SNUG
 # grip variant
-TOOTH_P, TOOTH_H = 1.6, 0.5
+TOOTH_P, TOOTH_H = 1.6, 0.8              # 0.8 tall (was 0.5; user test 2026-11-26)
 G_FOLD_MIN = 30.0              # fold-back length at the loosest setting
-KEEP_IN_H = 2 * (TAIL_T + TOOTH_H) - TOOTH_H + 0.4
+KEEP_IN_H = 2 * (TAIL_T + TOOTH_H) - TOOTH_H + 0.1   # meshed stack + 0.1 (was +0.4)
 KEEP_W, KEEP_L = 1.2, 6.0
+KEEP_IN_W = W + 0.4             # inner width (was W + 0.8)
 
 SIZES = b.SIZES                # (wrist, L between case bars, -)
 BUILD = ("L",)                 # test straps: L only for now (others build by adding them here)
@@ -130,8 +131,8 @@ def strap_grip(size):
 
 
 def keeper_grip():
-    ow, oh = W + 0.8 + 2 * KEEP_W, KEEP_IN_H + 2 * KEEP_W
-    k = Pos(0, 0, KEEP_L / 2) * Box(ow, oh, KEEP_L) - Pos(0, 0, KEEP_L / 2) * Box(W + 0.8, KEEP_IN_H, KEEP_L + 2)
+    ow, oh = KEEP_IN_W + 2 * KEEP_W, KEEP_IN_H + 2 * KEEP_W
+    k = Pos(0, 0, KEEP_L / 2) * Box(ow, oh, KEEP_L) - Pos(0, 0, KEEP_L / 2) * Box(KEEP_IN_W, KEEP_IN_H, KEEP_L + 2)
     return fillet(k.edges().filter_by(Axis.Z), 0.5)
 
 
