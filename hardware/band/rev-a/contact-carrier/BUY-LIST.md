@@ -52,7 +52,6 @@ Ontario stocks both sizes:
 | What | Per band | Per dock | Notes |
 | --- | --- | --- | --- |
 | Stick-on rubber feet, Ø8 mm | — | 4 | fit the four recesses under the rev B dock (any hardware store) |
-| M2 x 8 countersunk screw + M2 hex nut (ISO 4032), A2 stainless | — | 1 + 1 | dock rev D only: holds the top plate (`../../../dock/rev-d/case`) |
 | Gel epoxy (5-minute or 30-minute) | a drop | — | seals the carrier and its joints inside the wrist cover |
 | Kapton tape, 10-13 mm wide | a strip | — | over B.Cu under the cell, landing pads left clear |
 

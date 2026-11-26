@@ -1,4 +1,4 @@
-"""Section views of the dock rev D hook latch (y 119.3) and screw (y 121.0).
+"""Section views of the dock rev D hook latch (y 119.3) and snap clip (y 119.8).
 usage: python preview_rev_d.py OUT_DIR   (needs build123d, matplotlib)"""
 import sys
 from pathlib import Path
@@ -22,7 +22,6 @@ def draw(ax, shape, color, y):
 def main(out):
     top, tray = D.make_top(), D.make_tray()
     pcb, pins, _ = D.C.make_inside()
-    screw, nut = D.make_screw_and_nut()
     fig, axs = plt.subplots(1, 4, figsize=(18, 4.8), dpi=150, gridspec_kw=dict(width_ratios=[1.3, 1.3, 1, 1]))
     y_hook = D.CORNER[1] - 0.3                           # through the straight run of the hook lip
     views = (("1. Hook the left end in (plate tilted 50 deg)", 50, (86, 104, -9, 9)),
@@ -34,13 +33,14 @@ def main(out):
         ax.set_xlim(x0, x1); ax.set_ylim(z0, z1); ax.set_aspect("equal")
         ax.set_title(title, fontsize=10); ax.set_xlabel("x (mm), left end"); ax.grid(alpha=0.25)
     ax = axs[3]
-    y = D.SCREW[1]
-    draw(ax, tray, "#5a5e66", y); draw(ax, top, "#e7e6df", y); draw(ax, screw, "#9aa0a8", y); draw(ax, nut, "#c9a14a", y)
-    ax.set_xlim(138, 149); ax.set_ylim(-9, 1.6); ax.set_aspect("equal"); ax.grid(alpha=0.25)
-    ax.set_title("4. M2 x 8 screw from below into a hex nut in the plate", fontsize=10); ax.set_xlabel("x (mm), right end")
+    y = (D.CLIP_Y0 + D.CLIP_HOOK_Y1) / 2
+    draw(ax, tray, "#5a5e66", y); draw(ax, top, "#e7e6df", y)
+    ax.set_xlim(140.5, 147.5); ax.set_ylim(-3.2, 1.6); ax.set_aspect("equal"); ax.grid(alpha=0.25)
+    ax.set_title("4. Clip: plate wall hooks under tray post", fontsize=10)
+    ax.set_xlabel("x (mm), right end")
     axs[0].set_ylabel("z (mm)")
-    fig.suptitle("NudgeBand dock rev D: hook at the back-left, screw at the back-right (sections; light = top plate, "
-                 "grey = tray, gold = nut)", fontsize=10)
+    fig.suptitle("NudgeBand dock rev D: hook at the back-left, snap clip at the back-right (sections; light = top plate, "
+                 "grey = tray)", fontsize=10)
     fig.tight_layout()
     fig.savefig(Path(out) / "wakeband-dock-rev-d-latch-section.png")
 
