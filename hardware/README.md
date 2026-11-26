@@ -21,10 +21,14 @@ hardware/
 │   │   ├── pcb/             rigid band board (rigid-rev-c.kicad_pro)
 │   │   ├── case/            shell + wrist cover, same geometry as rev B
 │   │   └── contact-carrier/ same carrier as rev A and rev B
-│   ├── rev-d/               build this: rev C board, case with a hook latch instead of press-fit pins
+│   ├── rev-d/               rev C board, case with a hook latch instead of press-fit pins
 │   │   ├── pcb/             copy of rev C's board (unchanged)
-│   │   ├── case/            shell + wrist cover rev D (print)
+│   │   ├── case/            shell + wrist cover rev D
 │   │   └── contact-carrier/ same carrier as rev A to C
+│   ├── rev-e/               build this (case not printed yet): rev D case for the 17.25 x 10 x 5.05 cell, Ø4 magnets
+│   │   ├── pcb/             copy of rev C's board (unchanged)
+│   │   ├── case/            shell + wrist cover rev E, plus an open dev shell for probing on the dock
+│   │   └── contact-carrier/ same carrier, sits 0.2 mm higher in the rev E cover
 │   └── archive/flex-rev-a/  early flex-PCB design (not built)
 ├── dock/                    the charging / programming dock
 │   ├── rev-a/
@@ -52,8 +56,9 @@ hardware/
 | Contact carrier PCB | [`band/rev-c/contact-carrier/fab/`](band/rev-c/contact-carrier/fab) | bare PCB, panel of 6, 1.6 mm |
 | Dock PCB, assembled | [`dock/rev-c/pcb/fab/dock-pcb-rev-c-fab.zip`](dock/rev-c/pcb/fab) | JLCPCB, top side (BOM + CPL inside the zip) |
 | Spring pins, magnets, feet, glue | [`band/rev-a/contact-carrier/BUY-LIST.md`](band/rev-a/contact-carrier/BUY-LIST.md) | Mouser, Indigo |
-| Band shell | [`band/rev-d/case/wakeband-case-rev-d-shell.stl`](band/rev-d/case) | PETG, top face down, no supports |
-| Wrist cover | [`band/rev-d/case/wakeband-case-rev-d-cover.stl`](band/rev-d/case) | PETG, wrist face down, pause at z 1.35 mm for the magnets |
+| Band shell | [`band/rev-e/case/wakeband-case-rev-e-shell.stl`](band/rev-e/case) | PETG, top face down, no supports |
+| Wrist cover | [`band/rev-e/case/wakeband-case-rev-e-cover.stl`](band/rev-e/case) | PETG, wrist face down; glue the Ø4 x 1.5 mm magnets in after printing (no pause) |
+| Dev shell (bring-up) | [`band/rev-e/case/wakeband-case-rev-e-dev-shell.stl`](band/rev-e/case) | PETG in a bright colour, top face down: open roof for probing on the dock |
 | Dock top plate and tray | [`dock/rev-d/case/`](dock/rev-d/case) (`-top.stl`, `-tray.stl`) | PETG, flat faces down, no supports; no screws |
 | Strap | [`strap/`](strap) | sewing pattern PDFs; TPU printed strap STLs in `strap/tpu-rev-a` |
 

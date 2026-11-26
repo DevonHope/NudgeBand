@@ -179,6 +179,10 @@ page('F',f'''<h1>Done!</h1><div class="done"><img src="{im('s_done_top')}"><img 
 <div><h2>Band seems dead</h2><ul><li>Measure the cell before closing: 3.0–4.2 V at TP201/TP202.</li><li>A sleeping protected cell wakes on the dock.</li><li>No firmware yet = no LED and no buzz.</li></ul></div>
 <div><h2>Doesn’t fit</h2><ul><li>Sand the board’s tab nubs.</li><li>Pinched wire under the cover: open and re-route.</li><li>Band too tight in the dock: set <code>REC_CLR</code> to 0.2 and reprint the dock top.</li><li>Hook won’t go in: set <code>CLR</code> to 0.2 in <code>case_rev_d.py</code> and reprint the shell.</li></ul></div></div>''')
 
-CSS=open('guide.css').read()
+# ---------------- debugging (dock pinout + bring-up measurements, src/debugpage.py)
+import debugpage
+page('F',debugpage.body(im('dock-pinout')))
+
+CSS=open('guide.css').read()+debugpage.CSS
 open('guide.html','w').write(f'<!doctype html><html><head><meta charset="utf-8"><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
 print(len(pages),'pages',stepno[0],'steps')
