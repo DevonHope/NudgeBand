@@ -2,7 +2,9 @@
 
 **3D-printed TPU test straps (no sewing), sizes S/M/L/XL (wrist 140 to 220 mm):**
 
-- [`tpu-rev-b/`](tpu-rev-b/): slit lock. Flat split-arrow tongues weave through two slits at both ends, with nothing standing up off the bed, so there's no layer-line weak point. Recommended.
+- [`tpu-rev-d/`](tpu-rev-d/): **one piece with a thread-through cinch clasp** (test build, size L only). The tail goes up through a window in the other end, pulls tight, folds back and locks on itself: either an arrow tongue in slits (3.5 mm steps) or meshing grip teeth with keepers.
+- [`tpu-rev-c/`](tpu-rev-c/): **one piece**. It goes through both case loops and over the top of the case, and closes with the rev B slit lock. Printed as a single part, across the bed diagonal.
+- [`tpu-rev-b/`](tpu-rev-b/): slit lock. Flat split-arrow tongues weave through two slits at both ends, with nothing standing up off the bed, so there's no layer-line weak point. Two pieces.
 - [`tpu-rev-a/`](tpu-rev-a/): double stud and tuck. The stud necks load across layer lines.
 
 ## Sewn straps
