@@ -25,6 +25,28 @@ jobs:
       - name: Smart-wake, activity, alarm and protocol tests
         run: make -C firmware/tests/host
 
+  dock-selftest:
+    name: Dock self-test (RP2040, Pico SDK)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install the ARM toolchain
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi ninja-build
+      - name: Get Pico SDK 2.2.0
+        run: git clone --depth 1 --branch 2.2.0 --recurse-submodules --shallow-submodules https://github.com/raspberrypi/pico-sdk.git "$RUNNER_TEMP/pico-sdk"
+      - name: Build
+        env:
+          PICO_SDK_PATH: ${{ runner.temp }}/pico-sdk
+        run: |
+          cmake -S firmware/dock-selftest -B build/dock-selftest -G Ninja
+          cmake --build build/dock-selftest
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dock-selftest
+          path: build/dock-selftest/dock_selftest.uf2
+
   build:
     name: Zephyr build (nudgeband/nrf54l10/cpuapp)
     runs-on: ubuntu-latest
