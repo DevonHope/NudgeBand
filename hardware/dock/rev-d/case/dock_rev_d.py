@@ -25,7 +25,8 @@ sys.path.insert(0, str(HERE.parents[1] / "rev-c" / "case"))
 sys.path.insert(0, str(HERE.parents[2] / "band" / "rev-d" / "case"))
 import dock_rev_c as C  # noqa: E402
 import case_rev_d as band_d  # noqa: E402  (hook profile)
-from build123d import Align, Color, Cone, Pos, Rot, RegularPolygon, export_step, export_stl  # noqa: E402
+from build123d import (Align, Axis, Color, Cone, Plane, Polygon, Pos, Rot, RegularPolygon, export_step,  # noqa: E402
+                       export_stl, extrude, revolve)
 
 case = C.case
 A = C.A
@@ -37,11 +38,71 @@ C.FEET = [(x, y) for x in (DOCK[0] + 11.0, DOCK[1] - 11.0) for y in (DOCK[2] + 6
 
 # ------------------------------------------------------------------ hooks (left end)
 HOOK, HOOK_FLAT, TIP_CH, CLR = band_d.HOOK, band_d.HOOK_FLAT, band_d.TIP_CH, band_d.CLR
-TONGUE_X = (91.2, 92.2)                           # 1.0 mm thick; slot reaches x 90.45, 0.75 mm or more in from the outline
+# The hook is a lip that follows the back-left corner of the outline (centre CORNER, radius 7): a short straight run
+# on the left face (y 117.95 to 118.6, between the strap channel's rounded lip and the corner) and then WRAP degrees
+# round the corner, at a constant inset, so the plate keeps at least 0.8 mm outside the slot everywhere.
+CORNER = (DOCK[0] + C.DOCK_R, DOCK[3] - C.DOCK_R)  # (96.35, 118.6)
+R_IN, R_OUT = 3.9, 5.15                           # lip 1.25 mm thick; hook tip at r 5.75, slot to r 5.9 (outline r 7)
+STRAIGHT_Y0 = 117.95                              # start of the straight run (clear of the channel's lip round)
+WRAP = 52                                         # degrees round the corner (as on the band)
 TONGUE_H = 1.85                                   # above the joint (-2.05); slot top -0.05: 1.25 mm of plate over it
-TONGUES_Y = ((118.2, 120.4),)                     # back-left block, clear of the band recess (y <= 117.85) and the
-                                                  # outline's corner round (centre 96.35, 118.6)
+ROOT = 0.6                                        # 45 deg gusset on the lip's inner root
 Z0 = C.PLATE_Z0                                   # joint plane (-2.05)
+SWEEP = range(0, 72, 2)                           # the slot is the lip's path as the plate swings open, 0 to 70 deg
+
+
+def _profile(root=True):
+    """lip section (x, z) on the line y = CORNER[1], hook pointing to -x (outward)"""
+    cx = CORNER[0]
+    p = band_d.hook_face(cx - R_OUT, cx - R_IN, Z0 - 0.01, Z0 + TONGUE_H, HOOK, HOOK_FLAT, TIP_CH)
+    if root:
+        p = [(cx - R_IN + ROOT, Z0 - 0.01), (cx - R_IN, Z0 + ROOT)] + p[1:]
+    return Polygon(*p, align=None)
+
+
+def _lip(root=True, profile=None):
+    cx, cy = CORNER
+    prof = profile if profile is not None else _profile(root)
+    face = Pos(0, cy, 0) * (Plane.XZ * prof)
+    arc = revolve(face, Axis((cx, cy, 0), (0, 0, 1)), WRAP)
+    if arc.bounding_box().max.Y < cy + 0.5:                  # revolve the other way if it went toward -y
+        arc = revolve(face, Axis((cx, cy, 0), (0, 0, 1)), -WRAP)
+    straight = Pos(0, cy, 0) * extrude(Plane.XZ * prof, cy - STRAIGHT_Y0)
+    if straight.bounding_box().min.Y > cy - 0.1:
+        straight = Pos(0, cy, 0) * extrude(Plane.XZ * prof, -(cy - STRAIGHT_Y0))
+    return arc + straight
+
+
+def tongues():
+    return _lip()
+
+
+_SLOT = None
+
+
+def slots():
+    """the lip grown by CLR (union of shifted copies), swept along the plate's swing"""
+    global _SLOT
+    if _SLOT is None:
+        body = _lip()
+        c, d = CLR, CLR * 0.7071
+        grown = None
+        for v in ((c, 0, 0), (-c, 0, 0), (0, c, 0), (0, -c, 0), (d, d, 0), (d, -d, 0), (-d, d, 0), (-d, -d, 0),
+                  (0, 0, c), (d, 0, d), (-d, 0, d), (0, d, d), (0, -d, d), (0, 0, 0)):
+            g = Pos(*v) * body
+            grown = g if grown is None else grown + g
+        slot = grown
+        for th in SWEEP:
+            slot += swung(grown, -th)                # the plate turns, so the lip moves the other way relative to it
+        # square up the slot's inner side (a vertical wall at r 2.9) so the swept surface leaves no overhang in the
+        # plate, which prints underside down
+        cx = CORNER[0]
+        r0, z1 = R_IN - ROOT - 0.4, Z0 + TONGUE_H + CLR
+        box = Polygon((cx - R_IN, Z0 - 1), (cx - R_IN, z1), (cx - r0, z1), (cx - r0, Z0 - 1), align=None)
+        slot += _lip(profile=box) + Pos(0, CLR, 0) * _lip(profile=box) + Pos(0, -CLR, 0) * _lip(profile=box)
+        _SLOT = slot
+    return _SLOT
+
 
 # ------------------------------------------------------------------ screw (right end)
 SCREW = (143.8, 121.0)                            # back-right end block: 0.8 mm wall to the tray cavity, 3.3 mm to the outline
@@ -50,24 +111,6 @@ CSK_D, CSK_DEPTH = 4.4, 0.2                       # countersink (DIN 965 M2 head
 NUT_AF, NUT_T = 4.0, 1.6                          # M2 hex nut (ISO 4032)
 NUT_POCKET_AF, NUT_POCKET_T = 4.05, 1.7           # snug press, from the plate underside
 TIP_HOLE_TOP = 0.2                                # screw-tip clearance above the nut (1.0 mm of plate left over it)
-
-
-def tongues():
-    out = None
-    for y0, y1 in TONGUES_Y:
-        t = band_d.prism(band_d.hook_face(*TONGUE_X, Z0 - 0.01, Z0 + TONGUE_H, HOOK, HOOK_FLAT, TIP_CH), y0, y1)
-        out = t if out is None else out + t
-    return out
-
-
-def slots():
-    out = None
-    x_out, x_in = TONGUE_X
-    for y0, y1 in TONGUES_Y:
-        # inner side 0.6 mm wider: the plate moves outward over the tongue as it swings down
-        s = band_d.prism(band_d.hook_face(x_out, x_in + 0.6, Z0 - 1, Z0 + TONGUE_H, HOOK, HOOK_FLAT, TIP_CH), y0, y1, grow=CLR)
-        out = s if out is None else out + s
-    return out
 
 
 def make_top():
@@ -150,7 +193,7 @@ if __name__ == "__main__":
         v = r.volume if r is not None else 0
         print(f"  {deg:>2} deg: overlap {v:.4f} mm3")
     t = tongues()
-    for deg in (20, 30, 45, 50, 55, 60, 70):           # from which tilt the plate lifts straight up off the hook
+    for deg in (20, 30, 40, 45, 50, 55, 60, 70):           # from which tilt the plate lifts straight up off the hook
         if all((r := (Pos(0, 0, 0.1 * i) * swung(top, deg)) & t) is None or r.volume < 1e-4 for i in range(1, 31)):
             print(f"hook engages / releases with the plate tilted {deg} deg or more (lifts straight off the tongue)")
             break

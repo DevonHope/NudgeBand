@@ -167,8 +167,8 @@ page('E',two(
  step('Foam tape and motor tape',['s_foam'],['Stick the foam tape in the cover’s battery bay (over the two magnet bumps).','Peel the liner off the motor’s sticky face (or add a piece of double-sided tape) so it sticks to the round seat in the cover when you close it.'],
       p=[('p_foam','1x','foam tape')],lab=[('ped','motor seat','#555')])))
 page('E',two(
- step('Close the band',['s_close'],['Hold the cover <b>wrist face up</b> above the shell, <b>tilted</b>, the end without the screw hole lowest.','Tuck that end in first: the little <b>hook</b> on the cover goes in under the shell’s end wall.','Swing the screw end down. The hook pulls itself in; nothing slides. The spring pins land on the board’s dock contacts at the end of the swing.','Press gently until the gap closes all round. Don’t force it: check for a pinched wire.'],
-      lab=[('hook','hook','#8e5bd3')],boxes=[('tip','To open it later: take the screw out and lift the screw end. The cover unhooks once it is tilted about 20°.')]),
+ step('Close the band',['s_close'],['Hold the cover <b>wrist face up</b> above the shell, <b>tilted</b>, the end without the screw hole lowest.','Tuck that end in first: the <b>hook lip</b> along the cover’s end goes in under the shell’s end wall.','Swing the screw end down. The hook pulls itself in; nothing slides. The spring pins land on the board’s dock contacts at the end of the swing.','Press gently until the gap closes all round. Don’t force it: check for a pinched wire.'],
+      lab=[('hook','hook','#8e5bd3')],boxes=[('tip','To open it later: take the screw out and lift the screw end. The cover unhooks once it is tilted about 40°.')]),
  step('Screw it shut',['s_screw'],['Fit the <b>M2 × 6 countersunk screw</b> through the hole by the strap loop into the insert.','Tighten until snug. The head ends just below the surface.'],
       p=[('p_screw','1x','M2×6 screw')],boxes=[('warn','Snug, not tight: the case is plastic.')])))
 

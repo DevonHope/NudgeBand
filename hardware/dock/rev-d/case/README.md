@@ -11,11 +11,14 @@
 
 ## The joint
 
-- **Hook (back-left):** a tongue 2.2 mm wide (y 118.2 to 120.4) and 1.0 mm thick rises 1.85 mm from the tray's
-  solid back-left end block, 1.9 mm in from the left face, where rev C's back-left pin was. A **0.6 mm hook** at its
-  top points outward (to the left), with the band case's profile: 0.4 mm tip face, 45 degree underside, 0.2 mm
-  lead-in. The top plate has a matching slot from underneath, 0.15 mm clearance, 0.6 mm extra on the inner side
-  for the swing, 1.25 mm of plate left over it.
+- **Hook (back-left):** a lip rising 1.85 mm from the tray's solid back-left end block, where rev C's back-left pin
+  was. It follows the outline's back-left corner at a constant inset: a short straight run on the left face (y 117.95
+  to 118.6) and then 52 degrees round the corner arc, about 6 mm long in all. It is **1.25 mm thick** with a 0.6 mm 45
+  degree gusset at its inside root, and carries a **0.6 mm hook** pointing outward with the band case's profile (0.4 mm
+  tip face, 45 degree underside, 0.2 mm lead-in). The top plate's slot is the lip grown by 0.15 mm and swept along the
+  plate's swing (0 to 70 degrees), with its inner side squared up so the plate still prints without overhangs; 1.25
+  mm of plate stays over it and at least 0.8 mm outside it. Strengthened 2026-11-26: the first version was a straight
+  2.2 mm x 1.0 mm tongue; the engaged volume when pulled 0.3 mm went from 0.09 to 0.18 mm3 (2x).
 - **Screw (back-right):** **M2 x 8 countersunk** (DIN 965 / ISO 7046 or ISO 10642) up through the tray's back-right
   end block at (143.8, 121.0), head 0.2 mm below the tray's underside, into an **M2 hex nut** (ISO 4032, 4 mm
   across flats, 1.6 mm thick) pressed into a hex pocket in the plate underside (4.05 mm across flats, 1.7 mm deep).
@@ -49,7 +52,7 @@ To re-flash, take the screw out and swing the right end up; the plate comes off 
 | Swing: plate rocking on the tray's left outer edge, 1 to 70 degrees, against the tray, PCB envelope and spring pins | 0 overlap at every step |
 | Hook engages / releases | from 50 degrees of tilt |
 | Hook holds | pulling the closed tongue 0.3 mm down runs into the plate |
-| Print check (`../../../tools/printcheck.py`) | one solid each, no overhang past 45 degrees, no knife edges; the only bridge over 5 mm is still rev C's USB-C pocket (the nut pocket roof is a 4 mm bridge); the only thin spots are rev C's 0.4 mm LED skins and 0.2 mm magnet skins |
+| Print check (`../../../tools/printcheck.py`) | one solid each, no overhang past 45 degrees, no knife edges; the only bridge over 5 mm is still rev C's USB-C pocket (the nut pocket roof is a 4 mm bridge); the only thin spots are rev C's 0.4 mm LED skins and 0.2 mm magnet skins; the plate has a few overhang slivers under 0.1 mm2 at the curved end of the hook slot (below a nozzle width) |
 
 ## Files
 

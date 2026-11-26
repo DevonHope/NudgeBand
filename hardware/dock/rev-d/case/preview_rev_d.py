@@ -24,7 +24,7 @@ def main(out):
     pcb, pins, _ = D.C.make_inside()
     screw, nut = D.make_screw_and_nut()
     fig, axs = plt.subplots(1, 4, figsize=(18, 4.8), dpi=150, gridspec_kw=dict(width_ratios=[1.3, 1.3, 1, 1]))
-    y_hook = sum(D.TONGUES_Y[0]) / 2
+    y_hook = D.CORNER[1] - 0.3                           # through the straight run of the hook lip
     views = (("1. Hook the left end in (plate tilted 50 deg)", 50, (86, 104, -9, 9)),
              ("2. Swing the right end down", 12, (86, 104, -9, 4)),
              ("3. Closed: hook under the plate", 0, (88, 95, -3.5, 1.6)))
