@@ -7,8 +7,8 @@ load geometry only, then pick the settings below.
 | File | Parts | Size on plate |
 | --- | --- | --- |
 | `plate-1-lock-coupon.3mf` | lock coupon (tongue strip + three slit pairs) + 1 keeper | 70 x 50 mm |
-| `plate-2-S.3mf` / `-M` / `-L` | one strap in that size: long half, short half, keeper | 147 to 157 x 39 mm |
-| `plate-3-all-sizes.3mf` | S, M and L straps + 3 keepers | 173 x 131 mm |
+| `plate-2-S.3mf` / `-M` / `-L` / `-XL` | one strap in that size: long half, short half, keeper | 147 to 163 x 39 mm |
+| `plate-3-all-sizes.3mf` | S, M, L and XL straps + 4 keepers | 163 x 177 mm |
 | `make_plates.py` | rebuilds the 3MFs from the STLs one folder up | |
 
 Print the lock coupon first (about 10 min). Then print your size, or all sizes if you're not sure.

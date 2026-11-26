@@ -41,13 +41,14 @@ The adjustment step is 7 mm (slit pitch), with 5 settings per size.
 | S | 140 to 162 mm | 120.4 mm | 124.8 mm |
 | M | 158 to 180 mm | 124.4 mm | 138.8 mm |
 | L | 176 to 200 mm | 130.4 mm | 150.8 mm |
+| XL | 194 to 220 mm | 136.4 mm | 162.8 mm |
 
 ## Files
 
 | File | What |
 | --- | --- |
-| `nudgeband-strap-tpu-rev-b-{S,M,L}-short.stl/.step` | short half: case tab + clasp tongue |
-| `nudgeband-strap-tpu-rev-b-{S,M,L}-long.stl/.step` | long half: case tab + 6 slits |
+| `nudgeband-strap-tpu-rev-b-{S,M,L,XL}-short.stl/.step` | short half: case tab + clasp tongue |
+| `nudgeband-strap-tpu-rev-b-{S,M,L,XL}-long.stl/.step` | long half: case tab + 6 slits |
 | `nudgeband-strap-tpu-rev-b-keeper.stl/.step` | sliding keeper (print standing) |
 | `nudgeband-strap-tpu-rev-b-lock-coupon.stl/.step` | print first: a tongue and slit pairs 12.6 / 13.0 / 13.4 mm long |
 | `print-plates/` | Bambu X1C plates (3MF) + TPU settings |

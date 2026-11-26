@@ -7,8 +7,8 @@ load geometry only, then pick the settings below.
 | File | Parts | Size on plate |
 | --- | --- | --- |
 | `plate-1-fit-coupon.3mf` | fit coupon (stud strip + hole strip) + 1 keeper | 68 x 50 mm |
-| `plate-2-S.3mf` / `-M` / `-L` | one strap in that size: long half, short half, keeper | 121 to 135 x 39 mm |
-| `plate-3-all-sizes.3mf` | S, M and L straps + 3 keepers | 147 x 131 mm |
+| `plate-2-S.3mf` / `-M` / `-L` / `-XL` | one strap in that size: long half, short half, keeper | 121 to 147 x 39 mm |
+| `plate-3-all-sizes.3mf` | S, M, L and XL straps + 4 keepers | 147 x 177 mm |
 | `make_plates.py` | rebuilds the 3MFs from the STLs one folder up | |
 
 Print the fit coupon first (about 10 min). Then print your size, or all sizes if you're not sure.

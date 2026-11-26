@@ -64,7 +64,7 @@ def plate(name, rows):
 
 if __name__ == "__main__":
     plate("plate-1-lock-coupon", [["lock-coupon"], ["keeper"]])
-    for s in "SML":
+    for s in ("S", "M", "L", "XL"):
         plate(f"plate-2-{s}", [[f"{s}-long"], [f"{s}-short", "keeper"]])
-    plate("plate-3-all-sizes", [["L-long"], ["M-long"], ["S-long"], ["L-short"],
-                                ["M-short", "keeper"], ["S-short", "keeper", "keeper"]])
+    plate("plate-3-all-sizes", [["XL-long"], ["L-long"], ["M-long"], ["S-long"], ["XL-short", "keeper"], ["L-short", "keeper"],
+                                ["M-short", "keeper"], ["S-short", "keeper"]])

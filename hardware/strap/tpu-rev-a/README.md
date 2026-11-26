@@ -26,6 +26,7 @@ If a later case changes the loops, change `TAB_*`, `PEG_U` and `TAB_EXTRA` in `s
 | S | 140 to 162 mm | 94.8 mm | 108.8 mm | 5 |
 | M | 158 to 180 mm | 98.8 mm | 122.8 mm | 5 |
 | L | 176 to 200 mm | 104.8 mm | 134.8 mm | 5 |
+| XL | 194 to 220 mm | 110.8 mm | 146.8 mm | 5 |
 
 Wrist ranges assume about 50 mm of the wrist is taken by the case. Measure your wrist with a strip
 of paper; if you're on the edge of a size, pick the larger one.
@@ -34,8 +35,8 @@ of paper; if you're on the edge of a size, pick the larger one.
 
 | File | What |
 | --- | --- |
-| `nudgeband-strap-tpu-rev-a-{S,M,L}-short.stl/.step` | short half: two studs near the tip |
-| `nudgeband-strap-tpu-rev-a-{S,M,L}-long.stl/.step` | long half: 6 holes, tail goes into the keeper |
+| `nudgeband-strap-tpu-rev-a-{S,M,L,XL}-short.stl/.step` | short half: two studs near the tip |
+| `nudgeband-strap-tpu-rev-a-{S,M,L,XL}-long.stl/.step` | long half: 6 holes, tail goes into the keeper |
 | `nudgeband-strap-tpu-rev-a-keeper.stl/.step` | sliding keeper loop (one per strap) |
 | `nudgeband-strap-tpu-rev-a-fit-coupon.stl/.step` | print this first: a stud strip and a strip of 2.6 / 2.8 / 3.0 / 3.2 mm hole pairs (1 to 4 edge notches) |
 | `strap_tpu.py` | generator (build123d): `python strap_tpu.py OUT_DIR` |
