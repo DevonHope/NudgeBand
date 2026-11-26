@@ -1,5 +1,7 @@
 # WakeBand dock rev C
 
+> **Superseded by rev D** ([`../../rev-d/case`](../../rev-d/case)): same dock with a hook and one M2 screw instead of the two printed locating pins.
+
 > **Rev C case = the rev B dock case plus the 2026-11-08 review fixes** (1.9 x 0.6 mm slots over the
 > spring-pin barrels, two rear PCB stops in the tray, band recess clearance 0.15 mm), renamed
 > `wakeband-dock-rev-c-*` / `dock_rev_c.py`. Rev B's case is kept unchanged in [`../../rev-b/case`](../../rev-b/case).

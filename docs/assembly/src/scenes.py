@@ -42,6 +42,8 @@ S['p_pin']=dict(objects=[o for o in pins() if abs(o['pos'][1]+101.1)<0.01],view=
 S['p_mag3']=dict(objects=magnet(0,0,0,3,1,'N'),view=[1,-1.2,1.0],**TH)
 S['p_mag4']=dict(objects=magnet(0,0,0,4,1.5,'N'),view=[1,-1.2,1.0],**TH)
 S['p_screw']=dict(objects=screw(),view=[1,-1,0.5],**TH)
+S['p_dscrew']=dict(objects=dock_screw(),view=[1,-1,0.5],**TH)
+S['p_dnut']=dict(objects=dock_nut(),view=[1,-1,0.9],**TH)
 S['p_insert']=dict(objects=insert(),view=[1,-1,0.9],**TH)
 S['p_shell']=dict(objects=shell(),view=V_ISO,**TH)
 S['p_cover']=dict(objects=cover(),view=V_ISO,**TH)
@@ -103,8 +105,9 @@ S['s_stack']=dict(objects=shell()+band_board()+kapton(op=0.75)+cell()+cell_wires
 S['s_foam']=dict(objects=cover()+band_magnets()+carrier()+pins()+up(foam(),6)+[arrow([114.5,-107.5,11.5],[114.5,-107.5,4.2],'#e63946',0.4,1.6)],view=[1,-1.2,1.5],**ST)
 A['s_foam']={'ped':[128.75,-107.5,3.2]}
 # 12 cover onto shell (flipped): cover high above
-S['s_close']=dict(objects=shell()+band_board()+kapton(op=0.75)+cell()+cell_wires()+lra()+lra_wires()+foam()+up(cover()+carrier()+pins()+band_magnets()+foam(),-14)+
-     [arrow([100,-107.5,-11],[100,-107.5,-3],'#e63946',0.45,1.8),arrow([140,-107.5,-11],[140,-107.5,-3],'#e63946',0.45,1.8)],flip=True,view=V_ISO,**ST)
+S['s_close']=dict(objects=shell()+band_board()+kapton(op=0.75)+cell()+cell_wires()+lra()+lra_wires()+foam()+cover_tilt()+
+     [arrow([142,-107.5,-12],[142,-107.5,-4],'#e63946',0.45,1.8)],flip=True,view=[0.9,-1.5,0.9],**ST)
+A['s_close']={'hook':[98.6,-107.5,7.0]}
 S['s_screw']=dict(objects=shell()+insert()+band_board()+cell()+lra()+cover()+carrier()+pins()+band_magnets()+up(screw(),-9)+[arrow([136.6,-107.5,-4.0],[136.6,-107.5,-0.6],'#e63946',0.35,1.3)],flip=True,view=[1,-1.2,1.2],**ST)
 A['s_screw']={'s':[136.6,-107.5,-9.5]}
 # finished band
@@ -114,10 +117,14 @@ S['s_xray']=dict(objects=shell(op=0.25)+cover(op=0.3)+band_board()+cell()+cell_w
 # dock
 S['d_pins']=dict(objects=dock_pcb()+up(dock_pins(),6)+[arrow([134.5,-107.5,8],[134.5,-107.5,-2.5],'#e63946',0.3,1.2)],view=V_ISO,**ST)
 S['d_tray']=dict(objects=dock_tray()+up(dock_pcb()+dock_pins(),10)+[arrow([100,-112,10],[100,-112,1],'#e63946',0.45,1.8)],view=V_ISO,**ST)
-S['d_magnets']=dict(objects=dock_top()+up(dock_magnets(),-6)+[arrow([112.5,-107.5,-5.0],[112.5,-107.5,-2.2],'#e63946',0.3,1.0),arrow([120.5,-107.5,-5.0],[120.5,-107.5,-2.2],'#e63946',0.3,1.0)],flip=True,view=[0.4,-1.2,1.5],fitBox=[[100,-118,-8],[133,-97,1.2]],**ST)
-A['d_magnets']={'m1':[112.5,-107.5,-8.0],'m2':[120.5,-107.5,-8.0]}
-S['d_top']=dict(objects=dock_tray()+dock_pcb()+dock_pins()+up(dock_top()+dock_magnets(),12)+[arrow([94.5,-120.5,16],[94.5,-120.5,3],'#e63946',0.45,1.8),arrow([142.8,-120.5,16],[142.8,-120.5,3],'#e63946',0.45,1.8)],view=V_ISO,**ST)
-S['d_feet']=dict(objects=dock_tray()+dock_top()+up(feet(),-6)+[arrow([x,-y,-15],[x,-y,-10.2],'#e63946',0.4,1.4) for x,y in FEET],flip=True,view=V_ISO,**ST)
+S['d_magnets']=dict(objects=dock_top()+up(dock_magnets(),-6)+up(dock_nut(),-6)+[arrow([112.5,-107.5,-5.0],[112.5,-107.5,-2.2],'#e63946',0.3,1.0),arrow([120.5,-107.5,-5.0],[120.5,-107.5,-2.2],'#e63946',0.3,1.0),
+    arrow([DSCREW[0],-DSCREW[1],-5.0],[DSCREW[0],-DSCREW[1],-2.2],'#e63946',0.3,1.0)],flip=True,view=[0.4,-1.2,1.5],fitBox=[[100,-123,-8],[147,-97,1.2]],**ST)
+A['d_magnets']={'m1':[112.5,-107.5,-8.0],'m2':[120.5,-107.5,-8.0],'nut':[DSCREW[0],-DSCREW[1],-8.4]}
+S['d_top']=dict(objects=dock_tray()+dock_pcb()+dock_pins()+dock_top_tilt()+[arrow([140,-107.5,30],[140,-107.5,6],'#e63946',0.5,2.0)],view=[1,-1.6,0.9],**ST)
+A['d_top']={'hook':[91.7,-119.3,0.5]}
+S['d_feet']=dict(objects=dock_tray()+dock_top()+up(dock_screw(),-8)+up(feet(),-6)+[arrow([DSCREW[0],-DSCREW[1],-19],[DSCREW[0],-DSCREW[1],-10.5],'#e63946',0.4,1.4)]+
+    [arrow([x,-y,-15],[x,-y,-10.2],'#e63946',0.4,1.4) for x,y in FEET],flip=True,view=V_ISO,**ST)
+A['d_feet']={'screw':[DSCREW[0],-DSCREW[1],-16]}
 S['d_band']=dict(objects=dock_top()+dock_tray()+up(shell()+cover(),12)+[arrow([118,-107.5,22],[118,-107.5,13],'#e63946',0.5,2)],view=V_ISO,**ST)
 S['hero']=dict(objects=dock_top()+dock_tray()+shell()+cover()+[dict(type='cyl',r=1.0,h=0.05,pos=[130.225,-113.2,10.0],color='#ff4d6d',edges=False)],view=[1,-1.5,1.0],w=1800,h=1100,bg=False)
 S['strap']=dict(objects=shell()+cover()+strap('L')+strap('R'),view=[1,-1.4,0.9],**ST)
