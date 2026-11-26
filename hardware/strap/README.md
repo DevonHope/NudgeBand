@@ -1,5 +1,9 @@
 # WakeBand strap patterns
 
+**3D-printed TPU test strap (no sewing):** see [`tpu-rev-a/`](tpu-rev-a/). It's a two-piece strap with a double stud and tuck clasp, in sizes S/M/L.
+
+## Sewn straps
+
 Both fit the case rev A strap loops (16.6 x 2.2 mm slots, about 50 mm between the loop bars). Print the PDFs at 100% and check the 50 x 20 mm box.
 
 | File | Strap |
