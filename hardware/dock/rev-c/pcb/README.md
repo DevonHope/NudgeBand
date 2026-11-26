@@ -133,6 +133,10 @@ Y1 and J1 in the JLCPCB preview (the rest are computed, see above).
 
 ## Flashing the dock (once)
 
+First check a new board with the self-test firmware,
+[`firmware/dock-selftest`](../../../../firmware/dock-selftest): copy `dock_selftest.uf2` onto the blank
+dock's `RPI-RP2` drive and read the result off the two LEDs (the table in its README). Then:
+
 1. Download `debugprobe.uf2` from the latest release of
    https://github.com/raspberrypi/debugprobe (the build for the Raspberry Pi
    Debug Probe; this board copies its pin map, so no rebuild is needed).
