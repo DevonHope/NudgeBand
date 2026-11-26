@@ -24,6 +24,7 @@ hardware/
 │   ├── rev-d/               build this: rev C board, case with a hook latch instead of press-fit pins
 │   │   ├── pcb/             copy of rev C's board (unchanged)
 │   │   ├── case/            shell + wrist cover rev D (print)
+│   │   ├── test-shell/      open-roof shell for probing the board on the dock (print for bring-up)
 │   │   └── contact-carrier/ same carrier as rev A to C
 │   └── archive/flex-rev-a/  early flex-PCB design (not built)
 ├── dock/                    the charging / programming dock
