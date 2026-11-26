@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}</style>
+<script type="importmap">{"imports":{"three":"./three.module.min.js"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {STLLoader} from './jsm/STLLoader.js';
+const loader=new STLLoader(); const cache={};
+async function stl(url){ if(!cache[url]) cache[url]=await loader.loadAsync(url); return cache[url]; }
+function mat(o){
+  const m=new THREE.MeshStandardMaterial({color:o.color||'#cccccc',roughness:o.rough??0.55,metalness:o.metal??0.0,
+    transparent:(o.opacity??1)<1,opacity:o.opacity??1,side:THREE.DoubleSide,depthWrite:(o.opacity??1)>=1,
+    polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1, flatShading:false});
+  if(o.clipZ!==undefined) m.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,0,-1),o.clipZ)];
+  return m;
+}
+function place(obj,o){ if(o.pos) obj.position.set(...o.pos); if(o.rot) obj.rotation.set(...o.rot.map(a=>a*Math.PI/180)); return obj;}
+function withEdges(mesh,o,thr){ if(o.edges===false) return mesh;
+  const eg=new THREE.EdgesGeometry(mesh.geometry,thr||o.edgeAngle||30);
+  const lm=new THREE.LineBasicMaterial({color:o.edgeColor||'#1a1a1a',transparent:(o.opacity??1)<1,opacity:Math.min(1,(o.opacity??1)*1.6)}); if(o.clipZ!==undefined) lm.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,0,-1),o.clipZ)]; const ln=new THREE.LineSegments(eg,lm);
+  mesh.add(ln); return mesh;}
+async function build(o){
+  let g;
+  if(o.type==='stl'){ g=(await stl(o.url)).clone(); g.computeVertexNormals(); }
+  else if(o.type==='box'){ g=new THREE.BoxGeometry(...o.size); }
+  else if(o.type==='cyl'){ g=new THREE.CylinderGeometry(o.r2??o.r,o.r,o.h,o.seg||40); g.rotateX(Math.PI/2); g.translate(0,0,o.h/2); }
+  else if(o.type==='extrude'){ const s=new THREE.Shape(o.pts.map(p=>new THREE.Vector2(p[0],p[1])));
+     (o.holes||[]).forEach(h=>s.holes.push(new THREE.Path(h.map(p=>new THREE.Vector2(p[0],p[1])))));
+     g=new THREE.ExtrudeGeometry(s,{depth:o.h,bevelEnabled:false,curveSegments:24}); }
+  else if(o.type==='tube'){ const c=new THREE.CatmullRomCurve3(o.pts.map(p=>new THREE.Vector3(...p)),false,'catmullrom',0.1);
+     g=new THREE.TubeGeometry(c,Math.max(16,o.pts.length*12),o.r,10,false); }
+  else if(o.type==='arrow'){ const grp=new THREE.Group(); const a=new THREE.Vector3(...o.from), b=new THREE.Vector3(...o.to);
+     const d=b.clone().sub(a); const L=d.length(); const hl=o.head||Math.min(L*0.35,4); const r=o.r||0.45;
+     const m=new THREE.MeshBasicMaterial({color:o.color||'#e63946',depthTest:false});
+     const sh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,L-hl,16),m); sh.position.y=(L-hl)/2;
+     const hd=new THREE.Mesh(new THREE.ConeGeometry(r*2.6,hl,20),m); hd.position.y=L-hl/2;
+     const ol=new THREE.MeshBasicMaterial({color:'#ffffff',side:THREE.BackSide,depthTest:false});
+     const sh2=new THREE.Mesh(new THREE.CylinderGeometry(r*1.5,r*1.5,L-hl,16),ol); sh2.position.y=(L-hl)/2;
+     const hd2=new THREE.Mesh(new THREE.ConeGeometry(r*3.4,hl*1.25,20),ol); hd2.position.y=L-hl/2;
+     sh.renderOrder=hd.renderOrder=1001; sh2.renderOrder=hd2.renderOrder=1000; grp.add(sh2,hd2,sh,hd); grp.position.copy(a); grp.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.clone().normalize()); grp.renderOrder=10; grp.userData.noFit=o.noFit; return grp; }
+  const mesh=new THREE.Mesh(g,mat(o)); place(mesh,o); if(o.scale) mesh.scale.set(...o.scale);
+  if(o.renderOrder) mesh.renderOrder=o.renderOrder;
+  return withEdges(mesh,o);
+}
+window.renderScene=async function(spec){
+  const W=spec.w||1600,H=spec.h||1100;
+  const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); r.localClippingEnabled=true; r.setPixelRatio(1); r.setSize(W,H);
+  r.setClearColor(0xffffff,spec.bg===false?0:1);
+  document.body.innerHTML=''; document.body.appendChild(r.domElement);
+  const sc=new THREE.Scene();
+  sc.add(new THREE.HemisphereLight(0xffffff,0x8899aa,1.6));
+  const dl=new THREE.DirectionalLight(0xffffff,1.6); dl.position.set(...(spec.light||[-1,-2,3])); sc.add(dl);
+  const dl2=new THREE.DirectionalLight(0xffffff,0.5); dl2.position.set(2,1,1); sc.add(dl2);
+  const grp=new THREE.Group(); sc.add(grp);
+  for(const o of spec.objects){ const m=await build(o); if(o.noFit) m.userData.noFit=true; grp.add(m); }
+  if(spec.flip){ grp.rotation.x=Math.PI; grp.updateMatrixWorld(true);} 
+  const box=new THREE.Box3(); grp.children.forEach(c=>{ if(!c.userData.noFit) box.expandByObject(c)});
+  if(spec.fitBox){ box.set(new THREE.Vector3(...spec.fitBox[0]),new THREE.Vector3(...spec.fitBox[1])); box.applyMatrix4(grp.matrixWorld);} 
+  const ctr=spec.target?new THREE.Vector3(...spec.target):box.getCenter(new THREE.Vector3());
+  const dir=new THREE.Vector3(...(spec.view||[1,-1.4,1.1])).normalize();
+  const cam=new THREE.OrthographicCamera(-1,1,1,-1,-2000,2000);
+  cam.up.set(...(spec.up||[0,0,1])); cam.position.copy(ctr.clone().add(dir.clone().multiplyScalar(300))); cam.lookAt(ctr); cam.updateMatrixWorld();
+  // fit: project bbox corners into camera space
+  const pts=[]; for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]) pts.push(new THREE.Vector3(x,y,z).applyMatrix4(cam.matrixWorldInverse));
+  let x0=Math.min(...pts.map(p=>p.x)),x1=Math.max(...pts.map(p=>p.x)),y0=Math.min(...pts.map(p=>p.y)),y1=Math.max(...pts.map(p=>p.y));
+  const m=spec.margin??1.12; let cx=(x0+x1)/2, cy=(y0+y1)/2, hw=(x1-x0)/2*m, hh=(y1-y0)/2*m;
+  if(hw/hh>W/H) hh=hw*H/W; else hw=hh*W/H;
+  if(spec.zoom){hw/=spec.zoom;hh/=spec.zoom}
+  cam.left=cx-hw;cam.right=cx+hw;cam.top=cy+hh;cam.bottom=cy-hh;cam.updateProjectionMatrix();
+  r.render(sc,cam);
+  const anchors={}; for(const [k,v] of Object.entries(spec.anchors||{})){ const p=new THREE.Vector3(...v).applyMatrix4(grp.matrixWorld).project(cam); anchors[k]=[(p.x+1)/2,(1-p.y)/2]; }
+  window.__anchors=anchors;
+  return {png:r.domElement.toDataURL('image/png'),anchors,mmPerPx:(2*hw)/W};
+};
+window.ready=true;
+</script></body></html>
