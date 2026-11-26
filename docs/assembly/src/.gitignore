@@ -1,0 +1,11 @@
+r/
+img/
+node_modules/
+jsm/
+three.module.min.js
+package*.json
+guide.html
+guide.pdf
+__pycache__/
+band.json
+dock.json

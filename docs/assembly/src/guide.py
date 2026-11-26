@@ -9,7 +9,7 @@ def page(sec,body,cls=''):
     pages.append(f'''<section class="page {cls}" style="--sec:{col}">
 <div class="secbar"><span class="secl">{'' if sec=='0' else sec}</span><span class="secn">{name}</span></div>
 {body}
-<div class="foot"><span>NudgeBand · band rev C · case rev C · dock rev C</span><span class="pn">{len(pages)+1}</span></div></section>''')
+<div class="foot"><span>NudgeBand · band rev C board · case rev D · dock rev D</span><span class="pn">{len(pages)+1}</span></div></section>''')
 def parts(lst,title='You need'):
     if not lst: return ''
     it=''.join(f'<div class="pi"><img src="{im(n)}"><b>{q}</b><small>{E(l)}</small></div>' for n,q,l in lst)
@@ -38,7 +38,7 @@ pages.append(f'''<section class="page cover">
 <div class="cv-top"><div class="brand">NudgeBand</div><div class="cv-sub">Build instructions for the gentle-wake wristband</div></div>
 <img class="hero" src="{im('hero')}">
 <img class="hero2" src="{im('explode')}">
-<div class="chips"><span>Band rev C</span><span>Case rev C</span><span>Dock rev C</span><span>1 band + 1 dock</span><span>Soldering: medium</span><span>≈ 2 h + printing</span></div>
+<div class="chips"><span>Band board rev C</span><span>Case rev D</span><span>Dock rev D</span><span>1 band + 1 dock</span><span>Soldering: medium</span><span>≈ 2 h + printing</span></div>
 <div class="cv-foot">Open-source hardware · github.com/DevonHope/NudgeBand · Personal and experimental use only: the radio is not FCC/IC/CE certified.</div>
 </section>''')
 
@@ -65,7 +65,8 @@ band_parts=[('p_board','1x','Band PCB rev C (JLC assembled)'),('p_cell','1x','60
             ('p_carrier','1x','Contact carrier PCB (from the 6-up panel)'),('p_pin','4x','Mill-Max 0906-2-15-20-75-14-11-0 spring pin'),('p_mag3','2x','Ø3 × 1 mm N42 disc magnet'),
             ('p_screw','1x','M2 × 6 countersunk screw (DIN 7991, A2)'),('p_insert','1x','M2 brass heat-set insert, 3 mm long'),('p_shell','1x','Printed shell'),('p_cover','1x','Printed wrist cover')]
 dock_parts=[('p_dpcb','1x','Dock PCB rev C (flashed with debugprobe)'),('p_dpin','4x','Mill-Max 0906-4-15-20-75-14-11-0 spring pin'),('p_mag4','2x','Ø4 × 1.5 mm N42 disc magnet'),
-            ('p_feet','4x','Ø8 mm self-adhesive rubber foot'),('p_dtop','1x','Printed dock top'),('p_dtray','1x','Printed dock tray')]
+            ('p_feet','4x','Ø8 mm self-adhesive rubber foot'),('p_dtop','1x','Printed dock top'),('p_dtray','1x','Printed dock tray'),
+            ('p_dscrew','1x','M2 × 8 countersunk screw (A2)'),('p_dnut','1x','M2 hex nut (ISO 4032, A2)')]
 cons=[('p_kapton','1','Kapton tape, 10–13 mm wide'),('p_foam','1','Foam tape: 1.5 mm for a 4 mm cell (0.5 mm for 5 mm)')]
 def inv(lst): return ''.join(f'<div class="inv"><img src="{im(n)}"><div><b>{q}</b> {E(l)}</div></div>' for n,q,l in lst)
 page('0',f'''<h1>Parts list</h1><div class="invwrap"><div><h2>Band</h2><div class="invg">{inv(band_parts)}</div></div>
@@ -87,11 +88,11 @@ page('A',f'''<h1>A · Print list</h1><div class="ppgrid">
 <tr><td>Nozzle / layer height</td><td>0.4 mm / 0.12–0.16 mm</td><td>0.4 mm / 0.16–0.2 mm</td></tr>
 <tr><td>Walls / infill</td><td>4 perimeters / 100 %</td><td>3–4 perimeters / 30 % or more</td></tr>
 <tr><td>Supports / brim</td><td>none / none</td><td>none / none</td></tr>
-<tr><td>Files</td><td><code>hardware/band/rev-c/case/</code> …shell.stl, …cover.stl</td><td><code>hardware/dock/rev-c/case/</code> …top.stl, …tray.stl</td></tr></table>''')
+<tr><td>Files</td><td><code>hardware/band/rev-d/case/</code> …shell.stl, …cover.stl</td><td><code>hardware/dock/rev-d/case/</code> …top.stl, …tray.stl</td></tr></table>''')
 
 # ---------------- A steps
 page('A',two(
- step('Print the shell',['print_shell'],['Load <b>wakeband-case-rev-c-shell.stl</b>.','Lay it <b>outer face down</b> (the open side faces up).','Print in white, natural or another light PETG.','Let it cool, then peel it off. Don’t sand the top: the LED skin is only 0.4 mm.'],
+ step('Print the shell',['print_shell'],['Load <b>wakeband-case-rev-d-shell.stl</b>.','Lay it <b>outer face down</b> (the open side faces up).','Print in white, natural or another light PETG.','Let it cool, then peel it off. Don’t sand the top: the LED skin is only 0.4 mm.'],
       p=[('p_shell','1x','shell')],boxes=[('tip','If the LED skin looks see-through or holed, that’s normal for thin PETG. Leave it as printed.')]),
  step('Print the cover, add the magnets',['s_magnets'],
       ['In the slicer’s layer view, find the <b>first layer that closes over the two round magnet holes</b> (just above 1.25 mm) and add a <b>pause</b> before it.',
@@ -107,10 +108,16 @@ page('B',two(
       p=[('p_dpcb','1x','dock PCB'),('p_dpin','4x','0906-4 pin')],boxes=[('tip','Flash before fitting the top: the case has no BOOTSEL hole.')]),
  step('PCB into the tray',['d_tray'],['Lower the PCB into the tray, USB-C end first into its opening.','It sits against the two rear stops so a USB plug can’t push it back.'],p=[('p_dtray','1x','tray')])))
 page('B',two(
- step('Magnets into the dock top',['d_magnets'],['Turn the top plate over.','Find which way each magnet goes <b>using your printed band cover</b>: put a Ø4 magnet on the band cover’s wrist face over magnet A (A is nearer the end without the screw hole; in the dock, A is the pocket nearer the USB-C socket). It snaps on. The face that touches the cover goes <b>into the pocket first</b>.','Repeat for B with the second magnet.','Press each into its pocket with a small drop of CA glue.','Before the glue sets, try the cover in the recess: it must pull in one way round and push away when turned end for end.'],
-      p=[('p_dtop','1x','dock top'),('p_mag4','2x','Ø4×1.5 magnet')],lab=[('m1','A','#e63946'),('m2','B','#e63946')],
+ step('Magnets into the dock top',['d_magnets'],['Turn the top plate over.','Find which way each magnet goes <b>using your printed band cover</b>: put a Ø4 magnet on the band cover’s wrist face over magnet A (A is nearer the end without the screw hole; in the dock, A is the pocket nearer the USB-C socket). It snaps on. The face that touches the cover goes <b>into the pocket first</b>.','Repeat for B with the second magnet.','Press each into its pocket with a small drop of CA glue.','Before the glue sets, try the cover in the recess: it must pull in one way round and push away when turned end for end.',
+       'Press the <b>M2 nut</b> into the hex pocket at the back-right corner, with a drop of CA glue so it stays put when the top is off.'],
+      p=[('p_dtop','1x','dock top'),('p_mag4','2x','Ø4×1.5 magnet'),('p_dnut','1x','M2 nut')],lab=[('m1','A','#e63946'),('m2','B','#e63946'),('nut','nut','#6c757d')],
       boxes=[('warn','Don’t let glue reach the recess face or the pin slots.')]),
- step('Close the dock, add feet',['d_top','d_feet'],['Press the top plate onto the two locating pins, guiding the spring pins up through their holes.','Don’t glue the top: it lifts off for re-flashing.','Turn the dock over and stick a rubber foot inside each of the 4 rings.'],p=[('p_feet','4x','rubber foot')])))
+ step('Close the dock',['d_top'],['Hold the top plate <b>steeply tilted</b> (about 50°), its left end down by the back-left corner.','Hook it over the little <b>hook</b> on the tray’s back-left corner.','Swing the right end down, guiding the 4 spring pins up through their holes.','Don’t glue the top: it comes off for re-flashing.'],
+      lab=[('hook','hook','#8e5bd3')])))
+page('B',one(
+ step('Screw and feet',['d_feet'],['Turn the dock over.','Fit the <b>M2 × 8 countersunk screw</b> through the hole at the corner into the nut. Snug, not tight.','Stick a rubber foot inside each of the 4 rings. They are clear of the screw.'],
+      p=[('p_dscrew','1x','M2×8 screw'),('p_feet','4x','rubber foot')],lab=[('screw','screw','#6c757d')],
+      boxes=[('tip','To re-flash: take the screw out, lift the right end and unhook the top at about 50°.')])))
 
 # ---------------- C cover
 page('C',two(
@@ -151,7 +158,7 @@ page('D',two(
  step('Check, then kapton',['s_kapton'],['Meter on DC volts: TP201 (+) to TP202 (–) should read <b>3.0–4.2 V</b>.','Fold the cell and motor aside. Cover the back of the board with one layer of kapton from the antenna end up to just short of the 4 round dock contacts. It covers the solder joints too.','Fold the cell and motor back onto the kapton.'],
       p=[('p_kapton','1','strip of kapton')],lab=[('k','kapton','#c77700'),('dock','keep bare','#0077b6')],
       boxes=[('warn','The 4 round dock contacts must stay <b>bare</b>: the spring pins press on them.'),('tip','Reads 0 V? Some protected cells ship “asleep”. It wakes the first time the band sits on the dock.')]),
- step('Board into the shell',['s_board_shell'],['Put the shell on the table <b>inside up</b> (outer face down).','Lower the board in <b>parts side first</b>, so the back with the cell and motor faces up.','It drops into its pocket; the antenna end goes to the end with the two little pins.'])))
+ step('Board into the shell',['s_board_shell'],['Put the shell on the table <b>inside up</b> (outer face down).','Lower the board in <b>parts side first</b>, so the back with the cell and motor faces up.','It drops into its pocket; the antenna end goes to the end without the screw boss.'])))
 
 # ---------------- E close
 page('E',two(
@@ -160,8 +167,8 @@ page('E',two(
  step('Foam tape and motor tape',['s_foam'],['Stick the foam tape in the cover’s battery bay (over the two magnet bumps).','Peel the liner off the motor’s sticky face (or add a piece of double-sided tape) so it sticks to the round seat in the cover when you close it.'],
       p=[('p_foam','1x','foam tape')],lab=[('ped','motor seat','#555')])))
 page('E',two(
- step('Close the band',['s_close'],['Hold the cover <b>wrist face up</b> above the shell, strap loops level.','Lower it straight down. The ridge locates it and the spring pins land on the board’s dock contacts.','Press gently until the gap closes all round. Don’t force it: check for a pinched wire.'],
-      boxes=[('warn','Lower it straight, not tilted, so the spring pins don’t scrape across the board.')]),
+ step('Close the band',['s_close'],['Hold the cover <b>wrist face up</b> above the shell, <b>tilted</b>, the end without the screw hole lowest.','Tuck that end in first: the little <b>hook</b> on the cover goes in under the shell’s end wall.','Swing the screw end down. The hook pulls itself in; nothing slides. The spring pins land on the board’s dock contacts at the end of the swing.','Press gently until the gap closes all round. Don’t force it: check for a pinched wire.'],
+      lab=[('hook','hook','#8e5bd3')],boxes=[('tip','To open it later: take the screw out and lift the screw end. The cover unhooks once it is tilted about 20°.')]),
  step('Screw it shut',['s_screw'],['Fit the <b>M2 × 6 countersunk screw</b> through the hole by the strap loop into the insert.','Tighten until snug. The head ends just below the surface.'],
       p=[('p_screw','1x','M2×6 screw')],boxes=[('warn','Snug, not tight: the case is plastic.')])))
 
@@ -171,9 +178,9 @@ page('F',two(
  step('First charge and firmware',['d_band'],['Set the band in the dock, wrist side down. The magnets pull it in one way only.','Plug the dock into USB-C. The band starts charging at 30 mA (about 2 h from flat).','Flash the firmware through the dock’s debug probe (see <code>firmware/README.md</code>). After that the band’s LED shows charging through the shell.'],
       boxes=[('check','Tilt and tap the dock: the band must stay seated.')])))
 page('F',f'''<h1>Done!</h1><div class="done"><img src="{im('s_done_top')}"><img src="{im('s_done_wrist')}"><img src="{im('s_xray')}"></div>
-<div class="cols3 small"><div><h2>Doesn’t charge</h2><ul><li>Check the band sits flat in the dock (one way round).</li><li>Meter each dock pin to the tail above it (step 13).</li><li>Solder or flux on a tail? Clean with IPA.</li></ul></div>
+<div class="cols3 small"><div><h2>Doesn’t charge</h2><ul><li>Check the band sits flat in the dock (one way round).</li><li>Meter each dock pin to the tail above it (step 14).</li><li>Solder or flux on a tail? Clean with IPA.</li></ul></div>
 <div><h2>Band seems dead</h2><ul><li>Measure the cell before closing: 3.0–4.2 V at TP201/TP202.</li><li>A sleeping protected cell wakes on the dock.</li><li>No firmware yet = no LED and no buzz.</li></ul></div>
-<div><h2>Doesn’t fit</h2><ul><li>Sand the board’s tab nubs.</li><li>Pinched wire under the cover: open and re-route.</li><li>Band too tight in the dock: set <code>REC_CLR</code> to 0.2 and reprint the dock top.</li></ul></div></div>''')
+<div><h2>Doesn’t fit</h2><ul><li>Sand the board’s tab nubs.</li><li>Pinched wire under the cover: open and re-route.</li><li>Band too tight in the dock: set <code>REC_CLR</code> to 0.2 and reprint the dock top.</li><li>Hook won’t go in: set <code>CLR</code> to 0.2 in <code>case_rev_d.py</code> and reprint the shell.</li></ul></div></div>''')
 
 CSS=open('guide.css').read()
 open('guide.html','w').write(f'<!doctype html><html><head><meta charset="utf-8"><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')

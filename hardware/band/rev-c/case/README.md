@@ -1,5 +1,7 @@
 # WakeBand case rev C (for the rigid rev C board)
 
+> **Superseded by rev D** ([`../../rev-d/case`](../../rev-d/case)): same case with a hook latch instead of the two printed press-fit pins.
+
 > **Same geometry as the rev B case** ([`../../rev-b/case`](../../rev-b/case)); only the file names
 > changed (`wakeband-case-rev-c-*`, `case_rev_c.py`). Rev C's board keeps rev B's outline, dock landings,
 > LED and antenna positions, and its moved ESD parts (0.4-0.5 mm tall) clear the shell: clash check

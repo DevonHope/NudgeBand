@@ -1,8 +1,10 @@
 import json, math
 import os
 H=os.path.abspath(os.path.join(os.path.dirname(__file__),'../../../hardware'))
-STL=dict(shell=f'/fs{H}/band/rev-c/case/wakeband-case-rev-c-shell.stl', cover=f'/fs{H}/band/rev-c/case/wakeband-case-rev-c-cover.stl',
-         dtop=f'/fs{H}/dock/rev-c/case/wakeband-dock-rev-c-top.stl', dtray=f'/fs{H}/dock/rev-c/case/wakeband-dock-rev-c-tray.stl')
+R=os.path.abspath(os.path.join(os.path.dirname(__file__),'r'))
+STL=dict(shell=f'/fs{H}/band/rev-d/case/wakeband-case-rev-d-shell.stl', cover=f'/fs{H}/band/rev-d/case/wakeband-case-rev-d-cover.stl',
+         dtop=f'/fs{H}/dock/rev-d/case/wakeband-dock-rev-d-top.stl', dtray=f'/fs{H}/dock/rev-d/case/wakeband-dock-rev-d-tray.stl',
+         cover_tilt=f'/fs{R}/cover-tilt.stl', dtop_tilt=f'/fs{R}/dtop-tilt.stl')   # tilted parts: python tilt.py
 C=dict(shell='#f4efe4', cover='#5bc0eb', dtop='#f4efe4', dtray='#3d5a80', pcb='#1f7a4a', gold='#e8b923', ic='#2b2d31',
        cap='#c8a878', res='#222222', steel='#a7adb5', brass='#d4a640', red='#d62828', black='#222222', N='#e63946', S='#1d70b8',
        cell='#c9d1da', lra='#9aa4ae', kapton='#e39a2b', foam='#f2f2f2', epoxy='#ffb703', carrier='#2e8b57')
@@ -111,6 +113,16 @@ def cover(op=1,dz=0):
     o=dict(type='stl',url=STL['cover'],color=C['cover'],opacity=op,edgeAngle=35)
     if dz: o['pos']=[0,0,dz]
     return [o]
+def cover_tilt(op=1): return [dict(type='stl',url=STL['cover_tilt'],color=C['cover'],opacity=op,edgeAngle=35)]
+def dock_top_tilt(op=1): return [dict(type='stl',url=STL['dtop_tilt'],color=C['dtop'],opacity=op,edgeAngle=35)]
+DSCREW=(143.8,121.0)   # dock rev D: M2 x 8 countersunk from below into an M2 nut in the top plate
+def dock_screw(dz=0):
+    x,y=DSCREW
+    return [dict(type='cyl',r=1.9,r2=1.0,h=1.2,pos=[x,-y,-8.04+dz],color=C['steel'],metal=0.3,rough=0.3),
+            dict(type='cyl',r=1.0,h=6.8,pos=[x,-y,-6.84+dz],color=C['steel'],metal=0.3,rough=0.3)]
+def dock_nut(dz=0):
+    x,y=DSCREW
+    return [dict(type='cyl',r=2.31,h=1.6,pos=[x,-y,-2.03+dz],color=C['steel'],metal=0.3,rough=0.3,seg=6,edgeAngle=20)]
 def dock_top(op=1,dz=0): return [dict(type='stl',url=STL['dtop'],color=C['dtop'],opacity=op,pos=[0,0,dz],edgeAngle=35)]
 def dock_tray(op=1,dz=0): return [dict(type='stl',url=STL['dtray'],color=C['dtray'],opacity=op,pos=[0,0,dz],edgeAngle=35)]
 def dock_pcb(dz=0): return board(DOCK,-6.34+dz,1.6)
@@ -121,7 +133,7 @@ def dock_pins(dz=0):
             dict(type='cyl',r=0.6,h=3.2,pos=[131.5,-y,-4.49+dz],color=C['gold'],metal=0.25),
             dict(type='cyl',r=0.4,h=2.4,pos=[131.5,-y,-1.3+dz],color='#f0d36a',metal=0.25)]
     return o
-FEET=[(x,y) for x in (96.35,140.95) for y in (100.5,119.6)]
+FEET=[(x,y) for x in (100.35,136.95) for y in (100.5,119.6)]   # dock rev D
 def feet(dz=0): return [dict(type='cyl',r=4,h=1.5,pos=[x,-y,-9.74+dz],color='#333333',rough=0.9) for x,y in FEET]
 def arrow(a,b,color='#e63946',r=0.45,head=None):
     d={'type':'arrow','from':a,'to':b,'color':color,'r':r,'noFit':True}
