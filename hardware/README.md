@@ -32,7 +32,7 @@ hardware/
 │       ├── pcb/             dock PCB with pin ESD, decoupling, no vias under paste (dock-pcb-rev-c.kicad_pro)
 │       └── case/            dock housing rev C (print)
 ├── reviews/                 design reviews (latest: 2026-11-08, two advisors per board)
-├── strap/                   strap sewing patterns
+├── strap/                   strap sewing patterns + printable TPU strap (tpu-rev-a)
 └── tools/                   printcheck.py (printability check for the printed parts)
 ```
 
@@ -47,7 +47,7 @@ hardware/
 | Band shell | [`band/rev-c/case/wakeband-case-rev-c-shell.stl`](band/rev-c/case) | PETG, top face down, no supports |
 | Wrist cover | [`band/rev-c/case/wakeband-case-rev-c-cover.stl`](band/rev-c/case) | PETG, wrist face down, pause at z 1.25 mm for the magnets |
 | Dock top plate and tray | [`dock/rev-c/case/`](dock/rev-c/case) (`-top.stl`, `-tray.stl`) | PETG, flat faces down, no supports |
-| Strap | [`strap/`](strap) | sewing pattern PDFs |
+| Strap | [`strap/`](strap) | sewing pattern PDFs; TPU printed strap STLs in `strap/tpu-rev-a` |
 
 Each folder's README has the details: firmware notes and antenna tuning (band PCB), assembly (case),
 flashing the dock and programming the band (dock PCB).
