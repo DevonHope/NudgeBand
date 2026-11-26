@@ -53,7 +53,7 @@ hardware/
 | Dock PCB, assembled | [`dock/rev-c/pcb/fab/dock-pcb-rev-c-fab.zip`](dock/rev-c/pcb/fab) | JLCPCB, top side (BOM + CPL inside the zip) |
 | Spring pins, magnets, feet, glue | [`band/rev-a/contact-carrier/BUY-LIST.md`](band/rev-a/contact-carrier/BUY-LIST.md) | Mouser, Indigo |
 | Band shell | [`band/rev-d/case/wakeband-case-rev-d-shell.stl`](band/rev-d/case) | PETG, top face down, no supports |
-| Wrist cover | [`band/rev-d/case/wakeband-case-rev-d-cover.stl`](band/rev-d/case) | PETG, wrist face down, pause at z 1.25 mm for the magnets |
+| Wrist cover | [`band/rev-d/case/wakeband-case-rev-d-cover.stl`](band/rev-d/case) | PETG, wrist face down, pause at z 1.35 mm for the magnets |
 | Dock top plate and tray | [`dock/rev-d/case/`](dock/rev-d/case) (`-top.stl`, `-tray.stl`) | PETG, flat faces down, no supports; plus an M2 x 8 countersunk screw and M2 nut |
 | Strap | [`strap/`](strap) | sewing pattern PDFs; TPU printed strap STLs in `strap/tpu-rev-a` |
 

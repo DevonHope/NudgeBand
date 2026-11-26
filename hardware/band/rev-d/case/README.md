@@ -6,6 +6,16 @@
 > and so is the outside: the hook is hidden inside the joint. Rev C is kept unchanged in
 > [`../../rev-c/case`](../../rev-c/case). The board is rev C's ([`../pcb`](../pcb) is a copy).
 
+**Update 2026-11-26 (not printed yet):**
+- **Magnet pockets** in the wrist cover are now Ø3.3 x 1.15 mm for the Ø3 x 1 mm magnets: 0.15 mm clearance all round
+  and on top (rev C: 0.05 mm). The 0.2 mm skin under them is unchanged; the dome over each pocket rises 0.1 mm more
+  (top at z 1.6), so the print pause moves to **z 1.35 mm** and the foam under the cell is 0.35 mm thinner over the domes.
+- **LED side window:** the one-piece TPU strap now runs over the top of the shell and hides the top LED window, so the
+  long side wall next to the charge LED is hollowed from inside (x 128.9 to 131.4, z 7.5 to 8.3) down to a 0.4 mm skin
+  on the outside face. The LED shows through the side as well as the top. The top, end walls and strap slots are
+  unchanged. Print check: no new bridges or overhangs; the only new thin spot is that 0.4 mm skin.
+
+
 ![hook lip: tip in, swing down, closed](wakeband-case-rev-d-latch-section.png)
 
 ## The hook latch
@@ -56,7 +66,7 @@ removed.
 
 ## Printing
 
-As rev C: **shell top face down**, **cover wrist face down** with a pause at z 1.25 mm for the magnets, PETG, no
+As rev C: **shell top face down**, **cover wrist face down** with a pause at z 1.35 mm for the magnets, PETG, no
 supports. The hook's underside and the undercut's lower face are both 45 degrees, so they print as ordinary
 chamfers in these orientations. If your printer runs tight and the hook won't go in, open `CLR` in
 `case_rev_d.py` to 0.2 and reprint the shell only.
