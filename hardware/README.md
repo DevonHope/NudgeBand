@@ -36,7 +36,7 @@ hardware/
 │   ├── rev-c/               rev B + 2026-11-08 review fixes
 │   │   ├── pcb/             dock PCB with pin ESD, decoupling, no vias under paste (dock-pcb-rev-c.kicad_pro)
 │   │   └── case/            dock housing rev C (plate held by two printed pins)
-│   └── rev-d/               build this: rev C PCB, housing with a hook + one M2 screw
+│   └── rev-d/               build this: rev C PCB, housing with a hook lip + snap clip
 │       ├── pcb/             copy of rev C's dock PCB (unchanged)
 │       └── case/            dock housing rev D (print)
 ├── reviews/                 design reviews (latest: 2026-11-08, two advisors per board)
@@ -54,7 +54,7 @@ hardware/
 | Spring pins, magnets, feet, glue | [`band/rev-a/contact-carrier/BUY-LIST.md`](band/rev-a/contact-carrier/BUY-LIST.md) | Mouser, Indigo |
 | Band shell | [`band/rev-d/case/wakeband-case-rev-d-shell.stl`](band/rev-d/case) | PETG, top face down, no supports |
 | Wrist cover | [`band/rev-d/case/wakeband-case-rev-d-cover.stl`](band/rev-d/case) | PETG, wrist face down, pause at z 1.35 mm for the magnets |
-| Dock top plate and tray | [`dock/rev-d/case/`](dock/rev-d/case) (`-top.stl`, `-tray.stl`) | PETG, flat faces down, no supports; plus an M2 x 8 countersunk screw and M2 nut |
+| Dock top plate and tray | [`dock/rev-d/case/`](dock/rev-d/case) (`-top.stl`, `-tray.stl`) | PETG, flat faces down, no supports; no screws |
 | Strap | [`strap/`](strap) | sewing pattern PDFs; TPU printed strap STLs in `strap/tpu-rev-a` |
 
 Each folder's README has the details: firmware notes and antenna tuning (band PCB), assembly (case),

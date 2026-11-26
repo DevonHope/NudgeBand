@@ -65,8 +65,7 @@ band_parts=[('p_board','1x','Band PCB rev C (JLC assembled)'),('p_cell','1x','60
             ('p_carrier','1x','Contact carrier PCB (from the 6-up panel)'),('p_pin','4x','Mill-Max 0906-2-15-20-75-14-11-0 spring pin'),('p_mag3','2x','Ø3 × 1 mm N42 disc magnet'),
             ('p_screw','1x','M2 × 6 countersunk screw (DIN 7991, A2)'),('p_insert','1x','M2 brass heat-set insert, 3 mm long'),('p_shell','1x','Printed shell'),('p_cover','1x','Printed wrist cover')]
 dock_parts=[('p_dpcb','1x','Dock PCB rev C (flashed with debugprobe)'),('p_dpin','4x','Mill-Max 0906-4-15-20-75-14-11-0 spring pin'),('p_mag4','2x','Ø4 × 1.5 mm N42 disc magnet'),
-            ('p_feet','4x','Ø8 mm self-adhesive rubber foot'),('p_dtop','1x','Printed dock top'),('p_dtray','1x','Printed dock tray'),
-            ('p_dscrew','1x','M2 × 8 countersunk screw (A2)'),('p_dnut','1x','M2 hex nut (ISO 4032, A2)')]
+            ('p_feet','4x','Ø8 mm self-adhesive rubber foot'),('p_dtop','1x','Printed dock top'),('p_dtray','1x','Printed dock tray')]
 cons=[('p_kapton','1','Kapton tape, 10–13 mm wide'),('p_foam','1','Foam tape: 1.5 mm for a 4 mm cell (0.5 mm for 5 mm)')]
 def inv(lst): return ''.join(f'<div class="inv"><img src="{im(n)}"><div><b>{q}</b> {E(l)}</div></div>' for n,q,l in lst)
 page('0',f'''<h1>Parts list</h1><div class="invwrap"><div><h2>Band</h2><div class="invg">{inv(band_parts)}</div></div>
@@ -108,16 +107,14 @@ page('B',two(
       p=[('p_dpcb','1x','dock PCB'),('p_dpin','4x','0906-4 pin')],boxes=[('tip','Flash before fitting the top: the case has no BOOTSEL hole.')]),
  step('PCB into the tray',['d_tray'],['Lower the PCB into the tray, USB-C end first into its opening.','It sits against the two rear stops so a USB plug can’t push it back.'],p=[('p_dtray','1x','tray')])))
 page('B',two(
- step('Magnets into the dock top',['d_magnets'],['Turn the top plate over.','Find which way each magnet goes <b>using your printed band cover</b>: put a Ø4 magnet on the band cover’s wrist face over magnet A (A is nearer the end without the screw hole; in the dock, A is the pocket nearer the USB-C socket). It snaps on. The face that touches the cover goes <b>into the pocket first</b>.','Repeat for B with the second magnet.','Press each into its pocket with a small drop of CA glue.','Before the glue sets, try the cover in the recess: it must pull in one way round and push away when turned end for end.',
-       'Press the <b>M2 nut</b> into the hex pocket at the back-right corner, with a drop of CA glue so it stays put when the top is off.'],
-      p=[('p_dtop','1x','dock top'),('p_mag4','2x','Ø4×1.5 magnet'),('p_dnut','1x','M2 nut')],lab=[('m1','A','#e63946'),('m2','B','#e63946'),('nut','nut','#6c757d')],
+ step('Magnets into the dock top',['d_magnets'],['Turn the top plate over.','Find which way each magnet goes <b>using your printed band cover</b>: put a Ø4 magnet on the band cover’s wrist face over magnet A (A is nearer the end without the screw hole; in the dock, A is the pocket nearer the USB-C socket). It snaps on. The face that touches the cover goes <b>into the pocket first</b>.','Repeat for B with the second magnet.','Press each into its pocket with a small drop of CA glue.','Before the glue sets, try the cover in the recess: it must pull in one way round and push away when turned end for end.'],
+      p=[('p_dtop','1x','dock top'),('p_mag4','2x','Ø4×1.5 magnet')],lab=[('m1','A','#e63946'),('m2','B','#e63946')],
       boxes=[('warn','Don’t let glue reach the recess face or the pin slots.')]),
- step('Close the dock',['d_top'],['Hold the top plate <b>steeply tilted</b> (about 50°), its left end down by the back-left corner.','Hook it over the little <b>hook</b> on the tray’s back-left corner.','Swing the right end down, guiding the 4 spring pins up through their holes.','Don’t glue the top: it comes off for re-flashing.'],
-      lab=[('hook','hook','#8e5bd3')])))
+ step('Close the dock',['d_top'],['Hold the top plate <b>steeply tilted</b> (about 50°), its left end down by the back-left corner.','Hook it over the little <b>hook</b> on the tray’s back-left corner.','Swing the right end down, guiding the 4 spring pins up through their holes, and press until the <b>clip</b> at the back-right corner snaps.','Don’t glue the top: it comes off for re-flashing.'],
+      lab=[('hook','hook','#8e5bd3')],boxes=[('tip','To re-flash: pull the right end of the top up firmly to unsnap the clip, then unhook the left end at about 50°.')])))
 page('B',one(
- step('Screw and feet',['d_feet'],['Turn the dock over.','Fit the <b>M2 × 8 countersunk screw</b> through the hole at the corner into the nut. Snug, not tight.','Stick a rubber foot inside each of the 4 rings. They are clear of the screw.'],
-      p=[('p_dscrew','1x','M2×8 screw'),('p_feet','4x','rubber foot')],lab=[('screw','screw','#6c757d')],
-      boxes=[('tip','To re-flash: take the screw out, lift the right end and unhook the top at about 50°.')])))
+ step('Feet',['d_feet'],['Turn the dock over.','Stick a rubber foot inside each of the 4 rings.','The two small holes in the back wall show the status LEDs.'],
+      p=[('p_feet','4x','rubber foot')])))
 
 # ---------------- C cover
 page('C',two(
