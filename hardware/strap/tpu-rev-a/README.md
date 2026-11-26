@@ -54,6 +54,8 @@ of paper; if you're on the edge of a size, pick the larger one.
 
 ![Print layout, size M](preview-print-layout-M.png)
 
+**Bambu Lab X1C:** ready-laid-out 3MF plates and TPU settings are in [`print-plates/`](print-plates/).
+
 ## Fitting
 
 1. Slide the keeper onto the **short** strap from its case end (the studs are too tall for it to go
