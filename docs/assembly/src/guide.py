@@ -95,7 +95,7 @@ page('A',two(
  step('Print the shell',['print_shell'],['Load <b>wakeband-case-rev-d-shell.stl</b>.','Lay it <b>outer face down</b> (the open side faces up).','Print in white, natural or another light PETG.','Let it cool, then peel it off. Don’t sand the top: the LED skin is only 0.4 mm.'],
       p=[('p_shell','1x','shell')],boxes=[('tip','If the LED skin looks see-through or holed, that’s normal for thin PETG. Leave it as printed.')]),
  step('Print the cover, add the magnets',['s_magnets'],
-      ['In the slicer’s layer view, find the <b>first layer that closes over the two round magnet holes</b> (just above 1.25 mm) and add a <b>pause</b> before it.',
+      ['In the slicer’s layer view, find the <b>first layer that closes over the two round magnet holes</b> (just above 1.35 mm) and add a <b>pause</b> before it.',
        '<b>Stack the two magnets</b> so they snap together, then pull them apart.',
        'Drop both into their holes with the <b>faces that were touching facing DOWN</b>. That puts opposite poles down, so the band only fits the dock one way.',
        'Check they sit flat and below the top of the hole, then resume. The plastic closes over them.'],

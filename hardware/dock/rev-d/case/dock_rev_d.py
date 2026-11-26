@@ -33,6 +33,8 @@ A = C.A
 DOCK = C.DOCK
 
 C.LOC_PINS = ()                                   # no printed locating pins
+C.MAG_POCKET_D = C.MAG_D + 2 * band_d.MAG_FIT  # 4.3: 0.15 mm round the 4 x 1.5 mm magnets (rev C 4.1);
+# the pocket is open below (magnets glued in from underneath), so the magnet still sits against the 0.2 mm skin
 # rubber feet: 4 mm further in at each end (rev C x 96.35 / 140.95) so the right pair is clear of the screw head
 C.FEET = [(x, y) for x in (DOCK[0] + 11.0, DOCK[1] - 11.0) for y in (DOCK[2] + 6.0, DOCK[3] - 6.0)]
 

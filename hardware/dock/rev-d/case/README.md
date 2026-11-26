@@ -7,6 +7,10 @@
 > the dock PCB is rev C's ([`../pcb`](../pcb) is a copy). For everything not about the joint (strap, magnets,
 > BOOTSEL, printing colour) see the rev C README.
 
+**Update 2026-11-26 (not printed yet):** the magnet pockets are now Ø4.3 mm for the Ø4 x 1.5 mm magnets, 0.15 mm
+clearance all round (rev C: Ø4.1). They are open below (the magnets go in from underneath with a drop of CA glue), so
+the magnet still sits against the 0.2 mm skin on top: a 0.15 mm gap there would only weaken the pull on the band.
+
 ![hook and screw sections](wakeband-dock-rev-d-latch-section.png)
 
 ## The joint

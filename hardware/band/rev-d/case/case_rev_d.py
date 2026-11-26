@@ -27,6 +27,12 @@ from build123d import (Axis, Color, Kind, Plane, Polygon, Pos, Rot, export_step,
 
 A = C.A
 A.PIN_Y = ()                        # no press-fit pins (rev A-C had two at y 102.5 and 112.5)
+MAG_FIT = 0.15                      # magnet pocket clearance on every side and on top (rev C: 0.05 / 0.05)
+A.MAG_POCKET_D = A.MAG_D + 2 * MAG_FIT   # 3.3 for the 3 x 1 mm magnets
+A.MAG_POCKET_T = A.MAG_T + MAG_FIT       # 1.15, so the print pause moves to z 1.35
+
+LED_SIDE_X = (A.LED_XY[0] - 1.3, A.LED_XY[0] + 1.2)   # 128.9 to 131.4: LED body + 0.4, clear of the F.Cu post at 131.75
+LED_SIDE_Z = (A.BOARD_F, 8.3)                         # 7.5 to 8.3: the LED height (7.5 to 8.1), 0.8 mm over the lip room, below the rounded top edge
 
 # ------------------------------------------------------------------ hook latch
 # The hook is a continuous lip: it follows the cover's ridge across the whole antenna end and wraps round both
@@ -112,6 +118,9 @@ def make_shell():
     s = C.make_shell() - make_slot()
     for y0, y1 in ((101.1, 103.2), (111.8, 113.9)):          # antenna-strip posts onto F.Cu: kept whole
         s += A.box(A.CAV[0] + 0.3, A.BOARD[0] + 0.95, y0, y1, A.BOARD_F, A.ROOF_IN + 0.1)
+    # charge LED side window (2026-11-26): the one-piece strap covers the top window, so the long side wall
+    # next to the LED is hollowed from inside down to a LED_SKIN skin on the outer face. The top is unchanged.
+    s -= A.box(*LED_SIDE_X, A.CAV[3] - 0.1, A.Y1 - A.LED_SKIN, *LED_SIDE_Z)
     return s
 
 
