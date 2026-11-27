@@ -3,7 +3,7 @@
 SRC_DIR := ../../src
 CFLAGS  ?= -std=c11 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined
 CFLAGS  += -I$(SRC_DIR)
-SRCS    := test_main.c test_protocol.c $(SRC_DIR)/activity.c $(SRC_DIR)/smartwake.c \
+SRCS    := test_main.c test_protocol.c test_battery.c $(SRC_DIR)/battery.c $(SRC_DIR)/activity.c $(SRC_DIR)/smartwake.c \
            $(SRC_DIR)/alarm.c $(SRC_DIR)/protocol.c
 BUILD   := build
 

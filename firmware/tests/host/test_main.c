@@ -208,6 +208,7 @@ int main(void)
 	test_activity();
 	test_smartwake();
 	test_protocol();
+	test_battery();
 	printf("%d checks, %d failed\n", checks, failures);
 	return failures ? EXIT_FAILURE : EXIT_SUCCESS;
 }

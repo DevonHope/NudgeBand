@@ -64,11 +64,11 @@ Do these on one board at a time, in order, powered from the dock.
   - [x] Plan: stay in default mode (it already charges at 4.2 V / 30 mA), keep /CD low (Hi-Z,
     0.7 uA) and only raise it on battery to talk I2C. Never raise /CD while docked.
   - [~] Docked detection from /PG (DOCK_PG, internal pull-up).
-  - [ ] Battery percent from VBMON (reg 0x0A): conversion table from the datasheet, then a LiPo
-    voltage-to-charge curve. Find out whether a VBMON read alone starts host mode and its 50 s
-    watchdog.
-  - [ ] Charging flag from the status register for the app.
-  - [ ] Load-switch mode for the LED supply (reg 0x07 + LS_CTRL), re-written while the LED is on.
+  - [~] Battery percent from VBMON (reg 0x0A, `battery.c`, host-tested) and a LiPo curve, read
+    on battery every 2 min (not while docked: charging skews it). Check the reading against a
+    meter on the cell. The first test (v0.1) showed 255 %: that build had no reading at all.
+  - [~] Charging flag from the status register for the app.
+  - [~] Load-switch mode for the LED supply (reg 0x07 code 31 + LS_CTRL).
   - [ ] Ship mode for storage (EN_SHIPMODE with VIN absent, /CD and /MR high).
   - [ ] /INT (PMIC_INT) handling: fault logging, wake from System OFF if used.
 - [~] **2.2** LIS2DW12 motion sensor (`accel.c`): low-power 12-bit, 12.5 Hz, +/-2 g, FIFO
@@ -79,12 +79,13 @@ Do these on one board at a time, in order, powered from the dock.
   - [ ] Off-wrist / not-moving-for-hours detection (stationary for a long time = on the table).
 - [~] **2.3** DRV2605L motor driver (`haptics.c`): real-time playback with the firmware ramping the
   strength; patterns soft ramp, slow pulses and heartbeat; EN low between buzzes.
-  - [ ] Auto-calibration for the VG0832012 LRA (rated voltage, overdrive clamp, drive time from
-    its resonant frequency, from the motor datasheet). Run once at first boot, store the result.
+  - [~] Auto-calibration for the VG0832012 LRA (1.8 Vrms, 235 Hz): runs at every boot (a short
+    buzz), falls back to open loop at 235 Hz if it fails. Store the result in settings.
   - [ ] Check the motor actually runs from VBAT across the cell's range (3.0-4.2 V).
   - [ ] Tune what "gentle" means: start level, ramp length, the floor where it can't be felt.
-- [~] **2.4** IS31FL3193 LED driver (`led.c`): register writes are a guess from the README.
-  - [ ] Check every register bit against the datasheet; pick the current for about 5 mA.
+- [~] **2.4** IS31FL3193 LED driver (`led.c`).
+  - [x] Registers checked against the IS31FL3193D datasheet; 5 mA current code. The address is
+    probed (0x68, else 0x6B) and logged at boot.
   - [ ] Status colours: charging (on the dock), charged, low battery, pairing, identify (blink).
     Off the dock the LED stays off to save power.
 - [ ] **2.5** Brown-out and low battery: stop tracking and buzzing below a safe voltage; the BQ

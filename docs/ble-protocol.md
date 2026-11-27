@@ -91,7 +91,7 @@ sample rate, the band samples at 12.5 Hz, and the motor's shaking looks like tap
 | --- | --- | --- | --- |
 | 0 | u8 | version | 1 |
 | 1 | u8 | state | 0 idle, 1 tracking, 2 in wake window, 3 waking (buzzing), 4 waiting to repeat |
-| 2 | u8 | battery percent | from the BQ25125 VBMON reading, 2 % steps (no fuel gauge) |
+| 2 | u8 | battery percent | 0 to 100, estimated from the BQ25125 VBMON battery-voltage reading (no fuel gauge); 0xFF = not read yet |
 | 3 | u8 | flags | bit 0 docked, bit 1 charging, bit 2 time set, bit 3 alarm armed, bit 4 log has data |
 | 4 | u32 | next alarm UTC | 0 if none; the end of the next wake window |
 | 8 | u8 | firmware major | |
@@ -110,7 +110,7 @@ Write with response. The band answers each command with an **indication**:
 
 | Opcode | Command | Parameters |
 | --- | --- | --- |
-| `0x01` | TEST_BUZZ | u8 intensity percent, u8 seconds (1 to 10) |
+| `0x01` | TEST_BUZZ | u8 intensity (motor drive 0 to 255, same scale as the alarm), u8 seconds (1 to 10) |
 | `0x02` | STOP_BUZZ | none |
 | `0x03` | LOG_READ | u32 from UTC (0 = everything stored) |
 | `0x04` | LOG_CLEAR | none |

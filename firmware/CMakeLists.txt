@@ -22,4 +22,5 @@ target_sources(app PRIVATE
 	src/smartwake.c
 	src/alarm.c
 	src/protocol.c
+	src/battery.c
 )

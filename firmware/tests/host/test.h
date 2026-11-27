@@ -16,5 +16,6 @@ extern int checks;
 	} while (0)
 
 void test_protocol(void);
+void test_battery(void);
 
 #endif

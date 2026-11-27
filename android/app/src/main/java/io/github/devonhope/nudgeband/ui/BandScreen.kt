@@ -130,7 +130,7 @@ private fun ConnectedCard(name: String, status: BandStatus?, alarmOn: Boolean, v
             if (status == null) {
                 Text("Reading status...")
             } else {
-                InfoRow("Battery", "${status.batteryPercent} %" + when {
+                InfoRow("Battery", (if (status.batteryPercent in 0..100) "${status.batteryPercent} %" else "unknown") + when {
                     status.charging -> " (charging)"
                     status.docked -> " (on dock)"
                     else -> ""
