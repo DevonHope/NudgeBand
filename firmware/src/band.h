@@ -8,7 +8,7 @@
 #include "protocol.h"
 
 #define FW_MAJOR 0
-#define FW_MINOR 2
+#define FW_MINOR 3
 
 /* UTC now, or 0 if the phone has not set the time since power-up. */
 uint32_t band_now_utc(void);

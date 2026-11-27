@@ -39,6 +39,19 @@ static int wr(uint8_t reg, uint8_t val)
 	return i2c_reg_write_byte(i2c_bus, addr, reg, val);
 }
 
+/* Diagnostic: log every address that ACKs (a write of just the register pointer 0x00, which
+ * changes nothing on the parts on this bus). Expected: 0x19, 0x5A, 0x6A (+ 0x68 LED driver). */
+static void bus_scan(void)
+{
+	uint8_t reg = 0x00;
+
+	for (uint8_t a = 0x08; a < 0x78; a++) {
+		if (i2c_write(i2c_bus, &reg, 1, a) == 0) {
+			LOG_INF("  0x%02x answers", a);
+		}
+	}
+}
+
 /* Wake the driver (SDB high) and find which address answers (the chip can't be read). */
 static void probe(void)
 {
@@ -52,7 +65,8 @@ static void probe(void)
 		}
 	}
 	if (!addr) {
-		LOG_ERR("IS31FL3193 not answering at 0x68 or 0x6B");
+		LOG_ERR("IS31FL3193 not answering at 0x68 or 0x6B; I2C scan with SDB high:");
+		bus_scan();
 	}
 	gpio_pin_set_dt(&io_led_en, 0);
 }

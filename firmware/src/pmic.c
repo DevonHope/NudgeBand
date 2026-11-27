@@ -20,6 +20,7 @@ LOG_MODULE_REGISTER(pmic, LOG_LEVEL_INF);
 #define ADDR 0x6A
 
 #define REG_STATUS 0x00
+#define REG_FAULT  0x01 /* 7 VIN_OV, 6 VIN_UV, 5 BAT_UVLO, 4 BAT_OCP (clear on read) */
 #define REG_VBREG  0x05
 #define REG_LS_LDO 0x07
 #define REG_VBMON  0x0A
@@ -71,7 +72,10 @@ int pmic_init(void)
 	bool cd = cd_high();
 
 	/* On the dock the BQ talks I2C anyway (VIN present), so this works either way. */
+	uint8_t fault = 0;
+
 	err = rd(REG_STATUS, &st);
+	err = err ?: rd(REG_FAULT, &fault);
 	if (cd) {
 		cd_low();
 	}
@@ -79,7 +83,10 @@ int pmic_init(void)
 		LOG_ERR("no answer at 0x%02x (%d)", ADDR, err);
 		return err;
 	}
-	LOG_INF("BQ25125 status 0x%02x, %s", st, pmic_docked() ? "docked" : "on battery");
+	/* /PG (DOCK_PG) is low only while VIN is good. STAT: 0 ready, 1 charging, 2 done, 3 fault. */
+	LOG_INF("BQ25125 status 0x%02x (STAT %u), faults 0x%02x, /PG pin %s -> %s", st,
+		STATUS_STAT(st), fault, pmic_docked() ? "low" : "high",
+		pmic_docked() ? "docked" : "on battery");
 	(void)pmic_update();
 	return 0;
 }
@@ -100,6 +107,9 @@ int pmic_update(void)
 	cd = cd_high();
 	err = rd(REG_STATUS, &st);
 	charging = !err && docked && STATUS_STAT(st) == 1;
+	if (!err && docked) {
+		LOG_INF("docked: status 0x%02x (STAT %u)", st, STATUS_STAT(st));
+	}
 	/*
 	 * VBMON only on battery: a reading while charging is high (the datasheet suggests pausing
 	 * the charge), and on the dock we stay off I2C writes so the charger keeps its default mode.
