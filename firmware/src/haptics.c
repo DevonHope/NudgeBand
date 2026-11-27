@@ -68,6 +68,7 @@ static int wr(uint8_t reg, uint8_t val)
 	return i2c_reg_write_byte(i2c_bus, ADDR, reg, val);
 }
 
+static bool found; /* answered on I2C (needs VBAT) */
 static bool calibrated;
 static uint8_t cal_comp, cal_bemf, cal_feedback = LRA_FEEDBACK;
 
@@ -182,11 +183,12 @@ int haptics_init(void)
 	k_msleep(1);
 	err = i2c_reg_read_byte(i2c_bus, ADDR, REG_STATUS, &st);
 	if (err) {
-		LOG_ERR("no answer at 0x%02x (%d)", ADDR, err);
+		LOG_ERR("no answer at 0x%02x (%d): no VBAT (flat or cut-off cell)?", ADDR, err);
 		gpio_pin_set_dt(&io_hapt_en, 0);
 		return err;
 	}
 	LOG_INF("DRV2605L status 0x%02x (device id %u)", st, st >> 5);
+	found = true;
 	/* TODO(TODO.md 2.3): keep the calibration in settings instead of redoing it every boot. */
 	calibrate();
 	power_down();
@@ -196,6 +198,11 @@ int haptics_init(void)
 int haptics_start(uint8_t intensity, uint8_t pattern, uint8_t ramp_s, uint8_t buzz_s)
 {
 	int err;
+
+	/* The DRV2605L runs from raw VBAT: with a flat cell it isn't there at boot. Try again. */
+	if (!found && haptics_init() != 0) {
+		return -ENODEV;
+	}
 
 	gpio_pin_set_dt(&io_hapt_en, 1);
 	k_msleep(1);

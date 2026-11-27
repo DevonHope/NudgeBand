@@ -27,7 +27,6 @@ static uint8_t addr;
 #define REG_PWM3     0x06 /* OUT3 red */
 #define REG_UPDATE   0x07
 #define REG_LED_CTRL 0x1D
-#define REG_RESET    0x2F
 
 #define SHUTDOWN_ON  0x20 /* EN = 1 (channels on), SSD = 0 (normal operation) */
 #define MODE_PWM     0x00
@@ -58,7 +57,10 @@ static void probe(void)
 	gpio_pin_set_dt(&io_led_en, 1);
 	k_usleep(500);
 	for (size_t i = 0; i < ARRAY_SIZE(addrs); i++) {
-		if (i2c_reg_write_byte(i2c_bus, addrs[i], REG_RESET, 0x00) == 0) {
+		/* Write the power-up value (software shutdown) to reg 0x00. The 0.3 probe wrote the
+		 * reset register 0x2F and got no answer, while a scan writing reg 0x00 found 0x68:
+		 * this part apparently refuses (NACKs) register 0x2F. */
+		if (i2c_reg_write_byte(i2c_bus, addrs[i], REG_SHUTDOWN, 0x01) == 0) {
 			addr = addrs[i];
 			LOG_INF("IS31FL3193 at 0x%02x", addr);
 			break;
