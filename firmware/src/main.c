@@ -3,6 +3,7 @@
  * window before the alarm. Status of every part: ../TODO.md.
  */
 #include <zephyr/kernel.h>
+#include <zephyr/bluetooth/services/bas.h>
 #include <zephyr/logging/log.h>
 
 #include "accel.h"
@@ -10,6 +11,7 @@
 #include "alarm.h"
 #include "band.h"
 #include "ble.h"
+#include "battery.h"
 #include "board_io.h"
 #include "haptics.h"
 #include "led.h"
@@ -115,9 +117,9 @@ void band_get_status(struct nb_status *st)
 	st->version = NB_STATUS_VERSION;
 	st->state = state;
 	st->battery_pct = pmic_battery_pct();
-	st->flags = (pmic_docked() ? NB_FLAG_DOCKED : 0) | (time_set ? NB_FLAG_TIME_SET : 0) |
-		    (next_alarm_utc ? NB_FLAG_ALARM_ARMED : 0) | (sw.n ? NB_FLAG_LOG_HAS_DATA : 0);
-	/* TODO(TODO.md 2.1): NB_FLAG_CHARGING from the BQ25125 status register. */
+	st->flags = (pmic_docked() ? NB_FLAG_DOCKED : 0) | (pmic_charging() ? NB_FLAG_CHARGING : 0) |
+		    (time_set ? NB_FLAG_TIME_SET : 0) | (next_alarm_utc ? NB_FLAG_ALARM_ARMED : 0) |
+		    (sw.n ? NB_FLAG_LOG_HAS_DATA : 0);
 	st->next_alarm_utc = next_alarm_utc;
 	st->fw_major = FW_MAJOR;
 	st->fw_minor = FW_MINOR;
@@ -166,16 +168,17 @@ static void wake_locked(enum nb_wake_reason why)
 	buzz_locked();
 }
 
-enum nb_cp_result band_test_buzz(uint8_t intensity_pct, uint8_t seconds)
+enum nb_cp_result band_test_buzz(uint8_t intensity, uint8_t seconds)
 {
-	if (intensity_pct > 100 || seconds < 1 || seconds > 10) {
+	/* intensity is the motor drive 0-255, the same scale as the alarm's (docs/ble-protocol.md). */
+	if (seconds < 1 || seconds > 10) {
 		return NB_CP_INVALID;
 	}
 	if (state == NB_STATE_WAKING) {
 		return NB_CP_BUSY;
 	}
-	return haptics_start((uint8_t)(intensity_pct * 255u / 100u), 0, 1, seconds) ? NB_CP_BUSY
-										     : NB_CP_OK;
+	LOG_INF("test buzz: drive %u for %u s", intensity, seconds);
+	return haptics_start(intensity, 0, 1, seconds) ? NB_CP_BUSY : NB_CP_OK;
 }
 
 void band_stop_buzz(void)
@@ -197,12 +200,28 @@ void band_dismiss(void)
 	ble_status_changed();
 }
 
+/* IDENTIFY: blink the LED blue twice (on 250 ms, off 250 ms) from a work item, so the Bluetooth
+ * thread isn't held while the LED is lit. */
+static void identify_fn(struct k_work *w);
+static K_WORK_DELAYABLE_DEFINE(identify_work, identify_fn);
+static uint8_t identify_step;
+
+static void identify_fn(struct k_work *w)
+{
+	ARG_UNUSED(w);
+	bool on = (identify_step % 2) == 0;
+
+	(void)led_set(0, 0, on ? 128 : 0);
+	if (++identify_step < 4) {
+		k_work_reschedule(&identify_work, K_MSEC(250));
+	}
+}
+
 void band_identify(void)
 {
-	/* TODO(TODO.md 2.4): blink twice from a work item instead of a fixed on-time. */
-	(void)led_set(0, 0, 64);
-	k_msleep(300);
-	(void)led_set(0, 0, 0);
+	LOG_INF("identify: blink LED");
+	identify_step = 0;
+	k_work_reschedule(&identify_work, K_NO_WAIT);
 }
 
 /* Called once per epoch with that epoch's activity. */
@@ -233,6 +252,31 @@ static void end_of_epoch(uint16_t activity)
 	}
 }
 
+/* Battery and dock state: refresh, push to the Battery service, notify Status on a change. */
+#define BATTERY_EVERY_EPOCHS 4 /* 2 min */
+
+static void battery_refresh(void)
+{
+	static uint8_t last_pct = BATTERY_PCT_UNKNOWN;
+	static bool last_docked, last_charging;
+	uint8_t pct;
+	bool docked, charging_now;
+
+	(void)pmic_update();
+	pct = pmic_battery_pct();
+	docked = pmic_docked();
+	charging_now = pmic_charging();
+	if (pct <= 100) {
+		(void)bt_bas_set_battery_level(pct);
+	}
+	if (pct != last_pct || docked != last_docked || charging_now != last_charging) {
+		last_pct = pct;
+		last_docked = docked;
+		last_charging = charging_now;
+		ble_status_changed();
+	}
+}
+
 static struct gpio_callback acc_cb;
 
 static void acc_int1_isr(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
@@ -259,6 +303,7 @@ int main(void)
 	(void)haptics_init();
 	err = accel_init();
 	(void)ble_init();
+	battery_refresh();
 
 	if (err == 0) {
 		gpio_pin_interrupt_configure_dt(&io_acc_int1, GPIO_INT_EDGE_TO_ACTIVE);
@@ -269,6 +314,8 @@ int main(void)
 	}
 
 	epoch_end_ms = k_uptime_get() + EPOCH_S * 1000;
+	uint32_t epochs = 0;
+
 	for (;;) {
 		/* The FIFO interrupt normally wakes us every 2 s; the timeout covers a missed one. */
 		(void)k_sem_take(&fifo_ready, K_SECONDS(3));
@@ -282,6 +329,9 @@ int main(void)
 		while (k_uptime_get() >= epoch_end_ms) {
 			end_of_epoch(activity_end_epoch(&acc));
 			epoch_end_ms += EPOCH_S * 1000;
+			if (++epochs % BATTERY_EVERY_EPOCHS == 0) {
+				battery_refresh();
+			}
 		}
 	}
 	return 0;
