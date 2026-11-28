@@ -50,52 +50,52 @@ S['p_dtray']=dict(objects=dock_tray(),view=V_ISO,**TH)
 S['p_dpcb']=dict(objects=dock_pcb(),view=V_ISO,**TH)
 S['p_dpin']=dict(objects=[o for o in dock_pins() if abs(o['pos'][1]+101.1)<0.01],view=[1,-1,0.35],**TH)
 S['p_feet']=dict(objects=[dict(type='cyl',r=4,h=1.5,pos=[0,0,0],color='#333333',rough=0.9),dict(type='cyl',r=4,h=1.5,pos=[10,0,0],color='#333333',rough=0.9)],view=[1,-1.2,1.2],**TH)
-S['p_foam']=dict(objects=[dict(type='box',size=[15,12,1.5],pos=[0,0,0.75],color=C['foam'],rough=0.9),dict(type='box',size=[15,12,0.1],pos=[0,0,1.55],color='#e05a47',edges=False)],view=V_ISO,**TH)
+S['p_foam']=dict(objects=[dict(type='box',size=[15,8,0.3],pos=[0,0,0.15],color=C['foam'],rough=0.9),dict(type='box',size=[15,8,0.08],pos=[0,0,0.34],color='#e05a47',edges=False)],view=[1,-1.2,0.6],**TH)   # thin tape (drawn 3x thick)
 S['p_kapton']=dict(objects=[dict(type='cyl',r=8,h=12,pos=[0,0,0],color=C['kapton'],rough=0.4,seg=48),dict(type='cyl',r=5,h=12.1,pos=[0,0,-0.05],color='#f3e9d2',seg=48)],view=[1,-1.2,1.4],**TH)
 # ---------- print plates
 PR=dict(w=1100,h=760,margin=1.08)
-S['print_shell']=dict(objects=shell()+bed(11.0,95,143,-119,-96),flip=True,view=V_ISO,**PR)
+S['print_shell']=dict(objects=shell()+bed(11.2,95,143,-119,-96),flip=True,view=V_ISO,**PR)
 S['print_cover']=dict(objects=cover()+bed(0,89,148,-120,-95),view=V_ISO,**PR)
 S['print_dtop']=dict(objects=dock_top()+bed(-2.05,86,151,-128,-92),view=V_ISO,**PR)
 S['print_dtray']=dict(objects=dock_tray()+bed(-8.24,86,151,-128,-92),view=V_ISO,**PR)
 # ---------- steps
 ST=dict(w=1600,h=1050)
-# 1 magnets at the pause
-cv=cover(); cv[0]['clipZ']=1.25
-S['s_magnets']=dict(objects=cv+bed(0,89,148,-120,-95)+up(band_magnets(),6)+[arrow([112.5,-107.5,5.6],[112.5,-107.5,1.6],'#e63946',0.3,1.2),arrow([120.5,-107.5,5.6],[120.5,-107.5,1.6],'#e63946',0.3,1.2)],
-    view=[0.5,-1.3,1.6],fitBox=[[101,-116,0],[131,-99,6]],**ST)
-A['s_magnets']={'m1':[112.5,-107.5,7.3],'m2':[120.5,-107.5,7.3]}
+# 1 magnets into the printed cover's open pockets
+cv=cover()   # rev E: open pockets, magnets go in after printing
+S['s_magnets']=dict(objects=cv+bed(0,89,148,-120,-95)+up(band_magnets(),6)+[arrow([112.5,-107.5,6.0],[112.5,-107.5,2.0],'#e63946',0.3,1.2),arrow([120.5,-107.5,6.0],[120.5,-107.5,2.0],'#e63946',0.3,1.2)],
+    view=[0.5,-1.3,1.6],fitBox=[[101,-116,0],[131,-99,7]],**ST)
+A['s_magnets']={'m1':[112.5,-107.5,7.8],'m2':[120.5,-107.5,7.8]}
 # 2 insert
 S['s_insert']=dict(objects=shell()+up(insert(),-6)+[arrow([136.6,-107.5,-2.0],[136.6,-107.5,2.8],'#e63946',0.35,1.4)],flip=True,view=[1,-1.3,1.3],**ST)
 A['s_insert']={'ins':[136.6,-107.5,-3.0]}
 # 3 pins into carrier
 S['s_pins']=dict(objects=carrier()+up(pins(),6)+[arrow([133.2,-y,9.2],[133.2,-y,3.4],'#e63946',0.18,0.8) for y in (101.1,113.9)]+
-    [dict(type='cyl',r=0.6,h=0.12,pos=[131.5,-y,2.33],color='#b0b6bc',edges=False) for y in SPY],view=[1,-0.8,0.9],**ST)
-A['s_pins']={'paste':[131.5,-111.7,2.4],'tail':[131.5,-113.9,0.55]}
+    [dict(type='cyl',r=0.6,h=0.12,pos=[131.5,-y,2.63],color='#b0b6bc',edges=False) for y in SPY],view=[1,-0.8,0.9],**ST)
+A['s_pins']={'paste':[131.5,-111.7,2.7],'tail':[131.5,-113.9,0.85]}
 # 4 hotplate
-S['s_reflow']=dict(objects=carrier(dz=1.0)+pins(dz=1.0)+[dict(type='box',size=[12,22,1.0],pos=[131.5,-107.5,1.0],color='#9aa3ab'),dict(type='box',size=[26,30,4],pos=[131.5,-107.5,-1.6],color='#c1121f')],view=[1,-1.1,0.8],**ST)
+S['s_reflow']=dict(objects=carrier(dz=0.7)+pins(dz=0.7)+[dict(type='box',size=[12,22,1.0],pos=[131.5,-107.5,1.0],color='#9aa3ab'),dict(type='box',size=[26,30,4],pos=[131.5,-107.5,-1.6],color='#c1121f')],view=[1,-1.1,0.8],**ST)
 # 5 carrier into cover
 S['s_carrier']=dict(objects=cover()+band_magnets()+up(carrier()+pins(),9)+[arrow([134.5,-107.5,14],[134.5,-107.5,5],'#e63946',0.35,1.6)],view=[1.3,-0.9,1.5],fitBox=[[112,-118,0],[146,-97,14]],**ST)
 A['s_carrier']={'car':[131.5,-115.5,10.5]}
 # 6 epoxy
-bead=[dict(type='box',size=[0.7,15.8,0.9],pos=[x,-107.5,2.75],color=C['epoxy'],opacity=0.85,edges=False) for x in (130.1,132.9)]+\
-     [dict(type='box',size=[3.6,0.7,0.9],pos=[131.5,-y,2.75],color=C['epoxy'],opacity=0.85,edges=False) for y in (99.7,115.3)]
+bead=[dict(type='box',size=[0.7,15.8,0.9],pos=[x,-107.5,3.05],color=C['epoxy'],opacity=0.85,edges=False) for x in (130.1,132.9)]+\
+     [dict(type='box',size=[3.6,0.7,0.9],pos=[131.5,-y,3.05],color=C['epoxy'],opacity=0.85,edges=False) for y in (99.7,115.3)]
 S['s_epoxy']=dict(objects=cover()+carrier()+pins()+band_magnets()+bead,view=[0.35,-0.6,2.0],fitBox=[[120,-118,0],[143,-97,4]],margin=1.05,**ST)
-A['s_epoxy']={'bead':[132.9,-104,2.6],'plunger':[131.5,-111.7,6.7]}
+A['s_epoxy']={'bead':[132.9,-104,2.9],'plunger':[131.5,-111.7,7.2]}
 # 7 continuity check on the dock
 S['s_cover_dock']=dict(objects=dock_top()+dock_tray()+dock_pins()+dock_magnets()+cover()+carrier()+pins()+band_magnets(),view=V_ISO,**ST)
 # 8 battery solder (board back up = flipped, cell+wires)
-S['s_battery']=dict(objects=band_board()+up(cell(),-3)+[dict(type='tube',r=0.35,pts=[[124,-112.6,1.5],[127.5,-113,3.2],[129,-113.5,6.6]],color=C['red']),
-     dict(type='tube',r=0.35,pts=[[124,-102.0,1.5],[127.5,-101.2,3.2],[129.05,-101.6,6.6]],color=C['black'])],flip=True,view=[0.6,-1.0,1.5],**ST)
-A['s_battery']={'p':[129,-113.5,6.6],'n':[129.05,-101.6,6.6],'cell':[114,-107.5,0.5],'dock':[131.5,-107.5,6.7]}
-S['s_motor']=dict(objects=band_board()+up(cell(),-3)+[dict(type='tube',r=0.35,pts=[[124,-112.6,1.5],[127.5,-113,3.2],[129,-113.5,6.6]],color=C['red']),
-     dict(type='tube',r=0.35,pts=[[124,-102.0,1.5],[127.5,-101.2,3.2],[129.05,-101.6,6.6]],color=C['black'])]+up(lra(),-4)+
-     [dict(type='tube',r=0.14,pts=[[127.5,-103.9,2.2],[127.2,-102.2,4.5],[127.0,-101.5,6.62]],color=C['red']),dict(type='tube',r=0.14,pts=[[126.9,-104.2,2.2],[125.7,-102.3,4.5],[125.5,-101.5,6.62]],color=C['black'])],
+S['s_battery']=dict(objects=band_board()+up(cell(),-3)+[dict(type='tube',r=0.35,pts=[[124,-112.6,1.5],[127.5,-113,3.2],[129,-113.5,7.1]],color=C['red']),
+     dict(type='tube',r=0.35,pts=[[124,-102.0,1.5],[127.5,-101.2,3.2],[129.05,-101.6,7.1]],color=C['black'])],flip=True,view=[0.6,-1.0,1.5],**ST)
+A['s_battery']={'p':[129,-113.5,7.1],'n':[129.05,-101.6,7.1],'cell':[114,-107.5,0.5],'dock':[131.5,-107.5,7.2]}
+S['s_motor']=dict(objects=band_board()+up(cell(),-3)+[dict(type='tube',r=0.35,pts=[[124,-112.6,1.5],[127.5,-113,3.2],[129,-113.5,7.1]],color=C['red']),
+     dict(type='tube',r=0.35,pts=[[124,-102.0,1.5],[127.5,-101.2,3.2],[129.05,-101.6,7.1]],color=C['black'])]+up(lra(),-4)+
+     [dict(type='tube',r=0.14,pts=[[127.5,-103.9,2.2],[127.2,-102.2,4.5],[127.0,-101.5,7.12]],color=C['red']),dict(type='tube',r=0.14,pts=[[126.9,-104.2,2.2],[125.7,-102.3,4.5],[125.5,-101.5,7.12]],color=C['black'])],
      flip=True,view=[0.6,-1.0,1.5],**ST)
-A['s_motor']={'p':[126.25,-100.2,6.6],'lra':[128.75,-107.5,-0.5]}
+A['s_motor']={'p':[126.25,-100.2,7.1],'lra':[128.75,-107.5,-0.5]}
 # 9 kapton
-S['s_kapton']=dict(objects=band_board()+kapton(op=0.75)+[dict(type='tube',r=0.35,pts=[[129,-113.5,6.6],[127.5,-113,6.0],[124,-112.6,5.0]],color=C['red']),dict(type='tube',r=0.35,pts=[[129.05,-101.6,6.6],[127.5,-101.2,6.0],[124,-102.0,5.0]],color=C['black'])],flip=True,view=[0.6,-1.0,1.5],**ST)
-A['s_kapton']={'k':[110,-107.5,6.6],'dock':[131.5,-107.5,6.7]}
+S['s_kapton']=dict(objects=band_board()+kapton(op=0.75)+[dict(type='tube',r=0.35,pts=[[129,-113.5,7.1],[127.5,-113,6.4],[124,-112.6,5.0]],color=C['red']),dict(type='tube',r=0.35,pts=[[129.05,-101.6,7.1],[127.5,-101.2,6.4],[124,-102.0,5.0]],color=C['black'])],flip=True,view=[0.6,-1.0,1.5],**ST)
+A['s_kapton']={'k':[110,-107.5,7.1],'dock':[131.5,-107.5,7.2]}
 # 10 board into shell (shell face down: flip everything)
 S['s_board_shell']=dict(objects=shell()+up(band_board(),-9)+[arrow([115,-107.5,-4],[115,-107.5,3.2],'#e63946',0.4,1.6)],flip=True,view=V_ISO,**ST)
 # 11 cell + motor lie on board back, foam in cover
@@ -105,7 +105,7 @@ A['s_foam']={'ped':[128.75,-107.5,3.2]}
 # 12 cover onto shell (flipped): cover high above
 S['s_close']=dict(objects=shell()+band_board()+kapton(op=0.75)+cell()+cell_wires()+lra()+lra_wires()+foam()+cover_tilt()+
      [arrow([142,-107.5,-12],[142,-107.5,-4],'#e63946',0.45,1.8)],flip=True,view=[0.9,-1.5,0.9],**ST)
-A['s_close']={'hook':[98.6,-107.5,7.0]}
+A['s_close']={'hook':[98.6,-107.5,7.5]}
 S['s_screw']=dict(objects=shell()+insert()+band_board()+cell()+lra()+cover()+carrier()+pins()+band_magnets()+up(screw(),-9)+[arrow([136.6,-107.5,-4.0],[136.6,-107.5,-0.6],'#e63946',0.35,1.3)],flip=True,view=[1,-1.2,1.2],**ST)
 A['s_screw']={'s':[136.6,-107.5,-9.5]}
 # finished band
@@ -122,7 +122,7 @@ A['d_top']={'hook':[91.7,-119.3,0.5]}
 S['d_feet']=dict(objects=dock_tray()+dock_top()+up(feet(),-6)+
     [arrow([x,-y,-15],[x,-y,-10.2],'#e63946',0.4,1.4) for x,y in FEET],flip=True,view=V_ISO,**ST)
 S['d_band']=dict(objects=dock_top()+dock_tray()+up(shell()+cover(),12)+[arrow([118,-107.5,22],[118,-107.5,13],'#e63946',0.5,2)],view=V_ISO,**ST)
-S['hero']=dict(objects=dock_top()+dock_tray()+shell()+cover()+[dict(type='cyl',r=1.0,h=0.05,pos=[130.225,-113.2,10.0],color='#ff4d6d',edges=False)],view=[1,-1.5,1.0],w=1800,h=1100,bg=False)
+S['hero']=dict(objects=dock_top()+dock_tray()+shell()+cover()+[dict(type='cyl',r=1.0,h=0.05,pos=[130.225,-113.2,10.2],color='#ff4d6d',edges=False)],view=[1,-1.5,1.0],w=1800,h=1100,bg=False)
 S['strap']=dict(objects=shell()+cover()+strap('L')+strap('R'),view=[1,-1.4,0.9],**ST)
 S['explode']=dict(objects=up(shell(),26)+up(band_board(),16)+up(cell()+lra(),11)+foam()+cover()+carrier()+pins()+band_magnets()+up(screw(),-10)+up(insert(),24),view=[1,-1.6,0.95],w=1400,h=1500)
 S['t_board_back']=dict(objects=band_board(),flip=True,view=[0.4,-1,1.4],**ST)

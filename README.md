@@ -11,7 +11,7 @@ You can build one yourself.
 
 > **Status (November 2026):** prototype boards received. The dock is up and running its programmer
 > firmware; the band board has not been powered up with firmware yet. See [Current status](#current-status)
-> and the [assembly guide](docs/assembly/nudgeband-assembly-guide-rev-d.pdf).
+> and the [assembly guide](docs/assembly/nudgeband-assembly-guide-rev-e.pdf).
 
 ---
 
@@ -73,7 +73,7 @@ rev D latches (if they are tight, the clearance can be opened up from 0.15 to 0.
 
 ## Assembly guide
 
-[**nudgeband-assembly-guide-rev-d.pdf**](docs/assembly/nudgeband-assembly-guide-rev-d.pdf) is a 20-page,
+[**nudgeband-assembly-guide-rev-e.pdf**](docs/assembly/nudgeband-assembly-guide-rev-e.pdf) is a 21-page,
 picture-by-picture build guide in colour. It covers:
 
 - the parts list, what to print and the print settings

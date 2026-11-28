@@ -2,7 +2,7 @@ import json, math
 import os
 H=os.path.abspath(os.path.join(os.path.dirname(__file__),'../../../hardware'))
 R=os.path.abspath(os.path.join(os.path.dirname(__file__),'r'))
-STL=dict(shell=f'/fs{H}/band/rev-d/case/wakeband-case-rev-d-shell.stl', cover=f'/fs{H}/band/rev-d/case/wakeband-case-rev-d-cover.stl',
+STL=dict(shell=f'/fs{H}/band/rev-e/case/wakeband-case-rev-e-shell.stl', cover=f'/fs{H}/band/rev-e/case/wakeband-case-rev-e-cover.stl',
          dtop=f'/fs{H}/dock/rev-d/case/wakeband-dock-rev-d-top.stl', dtray=f'/fs{H}/dock/rev-d/case/wakeband-dock-rev-d-tray.stl',
          cover_tilt=f'/fs{R}/cover-tilt.stl', dtop_tilt=f'/fs{R}/dtop-tilt.stl')   # tilted parts: python tilt.py
 C=dict(shell='#f4efe4', cover='#5bc0eb', dtop='#f4efe4', dtray='#3d5a80', pcb='#1f7a4a', gold='#e8b923', ic='#2b2d31',
@@ -58,41 +58,45 @@ def board(geo_path,zbot,t=None,color=None,parts=True,bpads=True,flip=False,skip=
         objs.append(dict(type='box',size=[x1-x0,y1-y0,hgt],pos=[(x0+x1)/2,-(y0+y1)/2,ztop+hgt/2],color=col,edgeAngle=40,edgeColor='#333'))
     return objs
 BAND='band.json'; DOCK='dock.json'
-def band_board(**k): return board(BAND,6.7,0.8,**k)
+BB=7.2      # band rev E: B.Cu (the split) at z 7.2 (rev D 6.7)
+DZ=BB-6.7   # everything on the board side sits this much higher than in rev D
+def band_board(**k): return board(BAND,BB,0.8,**k)
 SPY=(101.1,103.3,111.7,113.9)
 def cell(dz=0,dx=0,dy=0,op=1):
-    z0=2.5+dz
-    o=[dict(type='box',size=[15.0,13,4],pos=[114.5+dx,-107.5+dy,z0+2],color=C['cell'],metal=0.3,rough=0.35,opacity=op),
-       dict(type='box',size=[2.0,12,3.4],pos=[123.0+dx,-107.5+dy,z0+2],color='#e0a43a',opacity=op)]
+    z0=1.7+dz   # rev E: 17.25 x 10 x 5.05 cell resting on the magnets
+    o=[dict(type='box',size=[15.25,10,5.05],pos=[114.375+dx,-107.5+dy,z0+2.525],color=C['cell'],metal=0.3,rough=0.35,opacity=op),
+       dict(type='box',size=[2.0,9,4.4],pos=[123.0+dx,-107.5+dy,z0+2.525],color='#e0a43a',opacity=op)]
     return o
 def cell_wires(dz=0,dx=0,dy=0,dzb=0):
     z=4.5+dz
-    return [dict(type='tube',r=0.35,pts=[[124+dx,-112.6+dy,z],[127.5+dx,-112.9+dy,z+0.6],[129+dx*0,-113.5+dy*0,6.5+dzb]],color=C['red']),
-            dict(type='tube',r=0.35,pts=[[124+dx,-102.0+dy,z],[127.5+dx,-100.9+dy,z+0.6],[129.05+dx*0,-101.6+dy*0,6.5+dzb]],color=C['black'])]
+    return [dict(type='tube',r=0.35,pts=[[124+dx,-111.6+dy,z],[127.5+dx,-112.9+dy,z+0.9],[129+dx*0,-113.5+dy*0,6.5+DZ+dzb]],color=C['red']),
+            dict(type='tube',r=0.35,pts=[[124+dx,-103.4+dy,z],[127.5+dx,-100.9+dy,z+0.9],[129.05+dx*0,-101.6+dy*0,6.5+DZ+dzb]],color=C['black'])]
 def lra(dz=0,dx=0,dy=0,op=1):
-    return [dict(type='cyl',r=4,h=3.25,pos=[128.75+dx,-107.5+dy,3.25+dz],color=C['lra'],metal=0.5,rough=0.35,seg=48,opacity=op),
-            dict(type='cyl',r=3.6,h=0.05,pos=[128.75+dx,-107.5+dy,3.2+dz],color='#f5f5f5',edges=False,opacity=op)]
+    return [dict(type='cyl',r=4,h=3.25,pos=[128.75+dx,-107.5+dy,3.5+dz],color=C['lra'],metal=0.5,rough=0.35,seg=48,opacity=op),
+            dict(type='cyl',r=3.6,h=0.05,pos=[128.75+dx,-107.5+dy,3.45+dz],color='#f5f5f5',edges=False,opacity=op)]
 def lra_wires(dz=0,dx=0,dy=0,dzb=0):
-    return [dict(type='tube',r=0.12,pts=[[127.5+dx,-103.9+dy,6.2+dz],[127.1,-102.4,6.45+(dz+dzb)/2],[127.0,-101.5,6.62+dzb]],color=C['red']),
-            dict(type='tube',r=0.12,pts=[[126.9+dx,-104.2+dy,6.2+dz],[125.7,-102.4,6.45+(dz+dzb)/2],[125.5,-101.5,6.62+dzb]],color=C['black'])]
+    return [dict(type='tube',r=0.12,pts=[[127.5+dx,-103.9+dy,6.45+dz],[127.1,-102.4,6.8+(dz+dzb)/2],[127.0,-101.5,7.12+dzb]],color=C['red']),
+            dict(type='tube',r=0.12,pts=[[126.9+dx,-104.2+dy,6.45+dz],[125.7,-102.4,6.8+(dz+dzb)/2],[125.5,-101.5,7.12+dzb]],color=C['black'])]
 def carrier(dz=0,dx=0,dy=0):
+    dz+=0.3   # rev E: carrier on a floor step at z 1.0 (rev D 0.7)
     o=[dict(type='box',size=[2.2,15.1,1.6],pos=[131.5+dx,-107.5+dy,1.5+dz],color=C['carrier'],edgeAngle=60)]
     for y in SPY: o.append(dict(type='cyl',r=0.7,h=0.03,pos=[131.5+dx,-y+dy,2.3+dz],color=C['gold'],metal=0.25,edges=False))
     return o
 def pins(dz=0,dx=0,dy=0,carrier_dz=None):
+    dz+=0.3   # rev E: with the carrier; plunger compressed onto B.Cu at z 7.2
     o=[]
     for y in SPY:
         X,Y=131.5+dx,-y+dy
         o+= [dict(type='cyl',r=0.215,h=1.75,pos=[X,Y,0.55+dz],color=C['gold'],metal=0.25,rough=0.3,edges=False),
              dict(type='cyl',r=0.915,h=0.25,pos=[X,Y,2.3+dz],color=C['gold'],metal=0.25,rough=0.3),
              dict(type='cyl',r=0.6,h=2.45,pos=[X,Y,2.55+dz],color=C['gold'],metal=0.25,rough=0.3),
-             dict(type='cyl',r=0.4,h=1.7,pos=[X,Y,5.0+dz],color='#f0d36a',metal=0.25,rough=0.3)]
+             dict(type='cyl',r=0.4,h=1.9,pos=[X,Y,5.0+dz],color='#f0d36a',metal=0.25,rough=0.3)]
     return o
 def magnet(x,y,z0,d,t,down_pole,op=1):
     a,b=(C['N'],C['S']) if down_pole=='N' else (C['S'],C['N'])
     return [dict(type='cyl',r=d/2,h=t/2,pos=[x,y,z0],color=a,opacity=op),dict(type='cyl',r=d/2,h=t/2,pos=[x,y,z0+t/2],color=b,opacity=op)]
 def band_magnets(dz=0,op=1):
-    return magnet(112.5,-107.5,0.2+dz,3,1,'N',op)+magnet(120.5,-107.5,0.2+dz,3,1,'S',op)
+    return magnet(112.5,-107.5,0.2+dz,4,1.5,'N',op)+magnet(120.5,-107.5,0.2+dz,4,1.5,'S',op)   # rev E: Ø4 x 1.5
 def dock_magnets(dz=0,op=1):
     return magnet(112.5,-107.5,-1.72+dz,4,1.5,'N',op)+magnet(120.5,-107.5,-1.72+dz,4,1.5,'S',op)
     # x112.5: S up (top blue) -> bottom N red ; x120.5: N up -> bottom S
@@ -102,9 +106,9 @@ def screw(dz=0):
 def insert(dz=0):
     return [dict(type='cyl',r=1.65,h=3.0,pos=[136.6,-107.5,3.5+dz],color=C['brass'],metal=0.3,rough=0.3,seg=12,edgeAngle=20)]
 def kapton(dz=0,op=0.55):
-    return [dict(type='box',size=[29.8,14.4,0.06],pos=[100.3+14.9,-107.5,6.67+dz],color=C['kapton'],opacity=op,edges=False)]
-def foam(dz=0):
-    return [dict(type='box',size=[15,12,1.5],pos=[114.5,-107.5,1.0+0.75+dz],color=C['foam'],rough=0.9)]
+    return [dict(type='box',size=[29.8,14.4,0.06],pos=[100.3+14.9,-107.5,BB-0.03+dz],color=C['kapton'],opacity=op,edges=False)]
+def foam(dz=0):   # rev E: no foam; a thin double-sided tape strip over the two magnets holds the cell
+    return [dict(type='box',size=[14,7,0.12],pos=[116.5,-107.5,1.76+dz],color=C['foam'],rough=0.9)]
 def shell(op=1,dz=0,flip=False): 
     o=dict(type='stl',url=STL['shell'],color=C['shell'],opacity=op,edgeAngle=35)
     if dz: o['pos']=[0,0,dz]
@@ -123,7 +127,7 @@ def dock_pins(dz=0):
     for y in SPY:
         o+=[dict(type='cyl',r=0.915,h=0.25,pos=[131.5,-y,-4.74+dz],color=C['gold'],metal=0.25),
             dict(type='cyl',r=0.6,h=3.2,pos=[131.5,-y,-4.49+dz],color=C['gold'],metal=0.25),
-            dict(type='cyl',r=0.4,h=2.4,pos=[131.5,-y,-1.3+dz],color='#f0d36a',metal=0.25)]
+            dict(type='cyl',r=0.4,h=2.15,pos=[131.5,-y,-1.3+dz],color='#f0d36a',metal=0.25)]   # tip on the band's tail at z 0.85
     return o
 FEET=[(x,y) for x in (96.35,140.95) for y in (100.5,119.6)]   # dock rev D (rev C positions; no screw)
 def feet(dz=0): return [dict(type='cyl',r=4,h=1.5,pos=[x,-y,-9.74+dz],color='#333333',rough=0.9) for x,y in FEET]
