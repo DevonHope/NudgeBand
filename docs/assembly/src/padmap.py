@@ -38,7 +38,7 @@ for f in G['fps']:
 a=M(fps['JP201']['pads'][0]['at']); b=M(fps['JP201']['pads'][1]['at'])
 ax.add_patch(Rectangle((min(a[0],b[0]),a[1]-0.25),abs(a[0]-b[0]),0.5,fc=GOLD,ec='none',zorder=4))
 # ghost cell + motor (on top of the board, as fitted)
-cell_c=M((115.5,107.5)); ax.add_patch(FancyBboxPatch((cell_c[0]-8.5+0.0,cell_c[1]-6.5),17,13,boxstyle='round,pad=0,rounding_size=1',fc='#c9ced6',ec='#59606b',lw=2,ls='--',alpha=0.35,zorder=6))
+cell_c=M((115.375,107.5)); ax.add_patch(FancyBboxPatch((cell_c[0]-8.625,cell_c[1]-5.0),17.25,10,boxstyle='round,pad=0,rounding_size=1',fc='#c9ced6',ec='#59606b',lw=2,ls='--',alpha=0.35,zorder=6))   # rev E: 17.25 x 10 cell
 ax.text(cell_c[0],cell_c[1]-0.6,'BATTERY\n(60 mAh LiPo)',ha='center',va='center',fontsize=15,weight='bold',color='#2b2f36',zorder=7)
 ax.text(cell_c[0],cell_c[1]+3.2,'sits here, on kapton',ha='center',va='center',fontsize=10.5,color='#2b2f36',zorder=7)
 lra_c=M((128.75,107.5)); ax.add_patch(Circle(lra_c,4,fc='#b9c3cf',ec='#59606b',lw=2,ls='--',alpha=0.35,zorder=6))

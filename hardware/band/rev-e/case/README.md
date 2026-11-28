@@ -95,5 +95,4 @@ dock). One M2 x 3 heat-set insert per shell, M2 x 6 countersunk screw. If the ho
 | `wakeband-case-rev-e-dev-shell.step` / `.stl` | open dev shell for probing on the dock |
 | `wakeband-case-rev-e-preview.png` | dev shell and cover, from inside |
 
-The assembly guide's pictures still show rev D (Ø3 magnets, print pause, foam under the cell); follow this README
-where they differ.
+The assembly guide ([`docs/assembly`](../../../../docs/assembly)) is built for rev E.

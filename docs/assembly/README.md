@@ -1,8 +1,10 @@
-# NudgeBand assembly guide (band board rev C, case rev D, dock rev D)
+# NudgeBand assembly guide (band board rev C, case rev E, dock rev D)
 
-- **[nudgeband-assembly-guide-rev-d.pdf](nudgeband-assembly-guide-rev-d.pdf)**: 20-page colour, step-by-step build guide
+- **[nudgeband-assembly-guide-rev-e.pdf](nudgeband-assembly-guide-rev-e.pdf)**: 21-page colour, step-by-step build guide
   (parts list, print list and settings, dock, contact carrier, board wiring, closing the band, strap, first charge).
-  Rev D: the band cover and the dock top hook in at one end and swing down onto the screw (no printed alignment pins).
+  Rev E: case for the measured 17.25 x 10 x 5.05 mm cell, Ø4 x 1.5 band magnets glued into open pockets (no print
+  pause), thin tape instead of foam, wider pin windows. The band cover and the dock top hook in at one end and swing
+  down onto the screw (no printed alignment pins).
 - **[dock-pinout.png](dock-pinout.png)**: the four dock contacts (band wrist side and dock spring pins P1-P4) and the
   bring-up probe points on top of the band, with expected voltages. Also the guide's last page (Debugging).
   Made by `src/pinout.py` from the band and dock KiCad files.

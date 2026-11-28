@@ -45,5 +45,5 @@ if __name__ == "__main__":
     page = f"""<section class="page" style="--sec:#e63946">
 <div class="secbar"><span class="secl">F</span><span class="secn">Finish</span></div>
 {body(img)}
-<div class="foot"><span>NudgeBand · band rev C board · case rev D/E · dock rev D</span><span class="pn">{pn}</span></div></section>"""
+<div class="foot"><span>NudgeBand · band rev C board · case rev E · dock rev D</span><span class="pn">{pn}</span></div></section>"""
     open(out, "w").write(f'<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head><body>{page}</body></html>')
