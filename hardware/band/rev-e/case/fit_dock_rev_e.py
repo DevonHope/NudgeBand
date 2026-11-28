@@ -11,8 +11,8 @@ DOCK = HERE.parents[2] / "dock" / "rev-d" / "case"
 
 # band rev E (from case_rev_e.py)
 SP_X, SP_Y = 131.5, (101.1, 103.3, 111.7, 113.9)
-TAIL_E = 0.9 + 1.6 - 1.75             # band pin tails, rev E (rev D 0.55)
-WIN_D0, WIN_D1, WIN_Z1 = 2.6, 1.6, 0.9
+TAIL_E = 1.0 + 1.6 - 1.75             # band pin tails, rev E (rev D 0.55)
+WIN_D0, WIN_D1, WIN_Z1 = 2.6, 1.6, 1.0
 MAG_E = (0.2, 1.7)                    # band magnets z (Ø4 x 1.5)
 MAG_XY = ((112.5, 107.5), (120.5, 107.5))
 # dock rev D (dock_rev_a / dock_rev_c numbers; unchanged)

@@ -5,11 +5,14 @@ an open DEV shell for bring-up on the dock.
 Changes (z = 0 at the wrist face):
   - Magnets: the dock's Ø4 x 1.5 mm discs (rev D: Ø3 x 1) at the same two places, in OPEN-TOP pockets (Ø4.3, 0.2 mm
     skin under them), glued in flush after printing: no print pause. Pocket rims and magnet tops at z 1.7.
-  - The cell rests on the magnets and their rims (no foam): cell 1.7 to 6.75, 0.15 mm air to B.Cu, so the split
-    (B.Cu) moves from z 6.70 to 6.90 and the shell is 0.2 mm taller (top 10.2).
-  - Contact carrier 0.2 mm higher (floor step z 0.9): the band-side pins keep 0.60 mm compression, and the pin tails
-    sit 0.2 mm deeper in the cover (z 0.75), so the dock's pins compress 0.50 mm instead of 0.70: about 30 % less
-    push lifting the band off the dock. The dock (rev D) is unchanged.
+  - The cell rests on the magnets and their rims (no foam): cell 1.7 to 6.75. Over it 0.45 mm of room to B.Cu, for
+    the extras a real build adds (rev D had 0.05 to 0.2 and didn't close): thin double-sided tape under the cell
+    (~0.1), kapton on the board's B side (~0.06), pouch swell / thickness spread (~0.1) and print growth (~0.1).
+    So the split (B.Cu) moves from z 6.70 to 7.20.
+  - Roof 0.9 mm (rev D 1.2), so the case is only 0.2 mm taller than rev D overall (top 10.2).
+  - Contact carrier 0.3 mm higher (floor step z 1.0): band-side pins 0.40 mm compression (rev D 0.60), pin tails
+    0.3 mm deeper in the cover (z 0.85), so the dock's pins compress 0.40 mm (rev D 0.70): much less push lifting
+    the band off the dock. The dock (rev D) is unchanged.
   - Pin windows in the wrist face Ø2.6 at the face (rev D 2.0) narrowing to Ø1.6 at the carrier (rev D 1.2), so the
     dock plungers find the tails without pressing the band down. Each pair's windows merge at the face.
 Cell seat: the side ribs close in to the 10 mm cell (y 102.5 to 112.5) and the end stop moves 0.2 mm toward the
@@ -32,9 +35,10 @@ REV_A = HERE.parents[1] / "rev-a" / "case" / "case_rev_a.py"
 # ---- rev A's module with rev E's cell numbers, registered before rev C / rev D import it
 CELL = (17.25, 10.0, 5.05)                     # measured cell, PCM and tape included (L x W x T)
 _PATCH = {
-    "CELL_MAX, FOAM, GAP = 5.0, 0.5, 0.2": "CELL_MAX, FOAM, GAP = 5.05, 0.7, 0.15   # rev E: the cell sits on the magnets (top z 1.7)",
+    "CELL_MAX, FOAM, GAP = 5.0, 0.5, 0.2": "CELL_MAX, FOAM, GAP = 5.05, 0.7, 0.45   # rev E: cell on the magnets (top z 1.7); 0.45 mm room over it",
+    "ROOF = 1.2": "ROOF = 0.9   # rev E: thinner roof keeps the case 10.2 mm tall",
     "MAG_D, MAG_T = 3.0, 1.0": "MAG_D, MAG_T = 4.0, 1.5   # rev E: the dock's Ø4 x 1.5 mm magnets",
-    "CARRIER_Z = 0.7  ": "CARRIER_Z = 0.9  ",
+    "CARRIER_Z = 0.7  ": "CARRIER_Z = 1.0  ",
     "WIN_D0, WIN_D1 = 2.0, 1.2": "WIN_D0, WIN_D1 = 2.6, 1.6   # rev E: wider pin windows",
     "c += cyl(x, y, MAG_POCKET_D / 2 + 0.6, FLOOR - 0.01, MAG_SKIN + MAG_POCKET_T + 0.25)\n        c -= cyl(x, y, MAG_POCKET_D / 2, MAG_SKIN, MAG_SKIN + MAG_POCKET_T)":
         "c += cyl(x, y, MAG_POCKET_D / 2 + 0.6, FLOOR - 0.01, MAG_SKIN + MAG_T)\n        c -= cyl(x, y, MAG_POCKET_D / 2, MAG_SKIN, MAG_SKIN + MAG_T + 1)   # rev E: open-top pocket, magnet glued in flush",
@@ -55,7 +59,7 @@ sys.path.insert(0, str(HERE.parents[1] / "rev-d" / "case"))
 import case_rev_d as D  # noqa: E402  (imports rev C, which picks up the patched rev A above)
 from build123d import Color, Pos, export_step, export_stl  # noqa: E402
 
-assert D.A is A and abs(A.BOARD_B - 6.90) < 1e-9, A.BOARD_B
+assert D.A is A and abs(A.BOARD_B - 7.20) < 1e-9, A.BOARD_B
 assert abs(A.MAG_POCKET_D - 4.3) < 1e-9
 # rev D wrote two heights as numbers for its B.Cu at 6.7: keep them 1.6 / 0.8 mm above the new split
 D.TONGUE_TOP = A.BOARD_B + 1.6                 # hook lip top (rev D 8.3), roof over its slot stays 1.55 mm

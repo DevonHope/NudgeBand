@@ -14,10 +14,12 @@
 | Cell envelope | 17 x 13.5 x 5.0 mm | **17.25 x 10.0 x 5.05 mm** (measured 2026-11-26) | the real cell is narrower, longer and thicker |
 | Cell seat | side ribs at y 100.75 / 114.25 | side ribs close in to y 102.5 / 112.5; end stop 0.2 mm toward the antenna end | holds the 10 mm cell; 0.5 mm from the motor |
 | Band magnets | Ø3 x 1 mm, closed pockets, print pause at z 1.35 | **Ø4 x 1.5 mm** (the dock's size), **open-top** pockets Ø4.3, 0.2 mm skin under them, glued in flush after printing | stronger pull onto the dock; **no print pause** |
-| Under the cell | 0.5 mm foam | none: the cell rests on the magnets and their rims (z 1.7); stick it with thin double-sided tape | the 5.05 mm cell needs the height |
-| Split (B.Cu) | z 6.70 | **z 6.90**: shell 0.2 mm taller (top 10.2) | 0.15 mm air over the cell |
-| Contact carrier | floor step z 0.7 | **z 0.9** | band-side pins keep 0.60 mm compression |
-| Dock pin compression | 0.70 mm | **0.50 mm** | the dock pushes the band up about 30 % less, so it seats without pressing |
+| Under the cell | 0.5 mm foam | none: the cell rests on the magnets and their rims (z 1.7); hold it with thin double-sided tape (0.15 mm max), **no foam** | the 5.05 mm cell needs the height |
+| Room over the cell | 0.05 mm with the real cell (didn't close) | **0.45 mm** | tape (~0.1), kapton on the board (~0.06), pouch spread / swell (~0.1), print growth (~0.1) |
+| Split (B.Cu) | z 6.70 | **z 7.20** | |
+| Roof | 1.2 mm | **0.9 mm**, so the case is only 0.2 mm taller than rev D (top 10.2) | 0.65 mm of roof left over the antenna pocket |
+| Contact carrier | floor step z 0.7 | **z 1.0** | |
+| Spring pin compression | band 0.60, dock 0.70 mm | **band 0.40, dock 0.40 mm** (1.40 mm stroke) | the dock pushes the band up much less, so it seats without pressing |
 | Pin windows (wrist face) | Ø2.0 → Ø1.2 cone | **Ø2.6 → Ø1.6**; each pair's windows merge at the face | the dock plungers find the tails easily |
 
 The dock (rev D) is **unchanged**: same pin positions, same magnet positions (Ø4 x 1.5 mm, as before), same recess
@@ -45,7 +47,7 @@ A dev shell for the **rev D** cover (the one you may already have printed) is on
 | Check | Result |
 | --- | --- |
 | Shell, cover, dev shell | one valid solid each |
-| Cell (17.25 x 10 x 5.05 on the magnets) vs shell / cover / dev shell / board / motor | 0 overlap |
+| Cell (17.25 x 10 x 5.05 on the magnets) vs shell / cover / dev shell / board / motor | 0 overlap, 0.45 mm under the board |
 | Shell vs cover, dev shell vs cover (closed) | 0 overlap |
 | Board vs shell / dev shell | 1.09 mm3: the land, post and antenna posts' intended 0.05 mm press onto F.Cu (as rev D) |
 | Motor envelope vs cover | 0.99 mm3: its Ø8.5 envelope (with the lead) against the locating arcs, as in rev A to D |
@@ -53,7 +55,7 @@ A dev shell for the **rev D** cover (the one you may already have printed) is on
 | Dev shell: hook holds (tongue pulled 0.3 mm toward the wrist) | 0.97 mm3 > 0 |
 | Print check, dev shell (`../../../tools/printcheck.py`) | one solid, no bridges, no overhangs past 45 degrees; thin spots are rev D's own (0.4 mm LED skin, 0.75 mm wall at the insert) and the slot-corner slivers under 0.1 mm |
 
-## Fit on the unchanged dock rev D (`fit_dock_rev_e.py`, 2026-11-27)
+## Fit on the unchanged dock rev D (`fit_dock_rev_e.py`, 2026-11-28)
 
 The rev E cover keeps rev D's footprint and wrist face, and the magnets and pin tails sit at the same x/y, so the
 dock needs no change. Checked against the dock's exported STEPs with its spring pins and magnets rebuilt from the
@@ -61,15 +63,15 @@ dock scripts' numbers:
 
 | Check | Rev E | Rev D |
 | --- | --- | --- |
-| Dock pin compression when seated (0906-4, 1.40 mm stroke) | **0.50 mm**, 0.90 mm left before bottoming | 0.70 |
-| Band height above its seat at first pin contact | 0.50 mm | 0.70 |
-| Window round the Ø1.07 plunger where it meets the tail | Ø1.77, **0.35 mm** radial clearance | Ø1.37, 0.15 mm |
+| Dock pin compression when seated (0906-4, 1.40 mm stroke) | **0.40 mm**, 1.00 mm left before bottoming | 0.70 |
+| Band height above its seat at first pin contact | 0.40 mm | 0.70 |
+| Window round the Ø1.07 plunger where it meets the tail | Ø1.75, **0.34 mm** radial clearance | Ø1.37, 0.15 mm |
 | Same, band pushed off-centre by the full recess clearance (0.15 mm) | 0 overlap | plunger touches the cone wall |
 | Dock pins, magnets, top plate, tray vs band cover (seated) | 0 overlap | |
 | Magnet faces (band Ø4 x 1.5 over dock Ø4 x 1.5) | 0.42 mm apart (two 0.2 mm skins) | 0.42 (band Ø3 x 1) |
 
 On rev D the plunger tip had only 0.15 mm of radial room at the tail, exactly the recess play, so a band sitting
-slightly off-centre had the plunger riding on the cone wall: that is likely why it needed pressing. Rev E has 0.35 mm.
+slightly off-centre had the plunger riding on the cone wall: that is likely why it needed pressing. Rev E has 0.34 mm.
 The magnet pockets sit in the middle of the floor (more than 4.8 mm from the side walls, 3.7 mm apart), so the bigger
 magnets don't change the case's outer size.
 
