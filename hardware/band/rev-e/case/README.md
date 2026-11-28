@@ -53,6 +53,29 @@ A dev shell for the **rev D** cover (the one you may already have printed) is on
 | Dev shell: hook holds (tongue pulled 0.3 mm toward the wrist) | 0.97 mm3 > 0 |
 | Print check, dev shell (`../../../tools/printcheck.py`) | one solid, no bridges, no overhangs past 45 degrees; thin spots are rev D's own (0.4 mm LED skin, 0.75 mm wall at the insert) and the slot-corner slivers under 0.1 mm |
 
+## Fit on the unchanged dock rev D (`fit_dock_rev_e.py`, 2026-11-27)
+
+The rev E cover keeps rev D's footprint and wrist face, and the magnets and pin tails sit at the same x/y, so the
+dock needs no change. Checked against the dock's exported STEPs with its spring pins and magnets rebuilt from the
+dock scripts' numbers:
+
+| Check | Rev E | Rev D |
+| --- | --- | --- |
+| Dock pin compression when seated (0906-4, 1.40 mm stroke) | **0.50 mm**, 0.90 mm left before bottoming | 0.70 |
+| Band height above its seat at first pin contact | 0.50 mm | 0.70 |
+| Window round the Ø1.07 plunger where it meets the tail | Ø1.77, **0.35 mm** radial clearance | Ø1.37, 0.15 mm |
+| Same, band pushed off-centre by the full recess clearance (0.15 mm) | 0 overlap | plunger touches the cone wall |
+| Dock pins, magnets, top plate, tray vs band cover (seated) | 0 overlap | |
+| Magnet faces (band Ø4 x 1.5 over dock Ø4 x 1.5) | 0.42 mm apart (two 0.2 mm skins) | 0.42 (band Ø3 x 1) |
+
+On rev D the plunger tip had only 0.15 mm of radial room at the tail, exactly the recess play, so a band sitting
+slightly off-centre had the plunger riding on the cone wall: that is likely why it needed pressing. Rev E has 0.35 mm.
+The magnet pockets sit in the middle of the floor (more than 4.8 mm from the side walls, 3.7 mm apart), so the bigger
+magnets don't change the case's outer size.
+
+`python fit_dock_rev_e.py fit` also writes stand-in STEPs (`fit/`: the dock's pins compressed on the rev E tails,
+both pairs of magnets) for a CAD fit check of the whole assembly.
+
 ## Printing
 
 PETG, no supports. **Shell and dev shell top face down**, **cover wrist face down** (no print pause any more:
